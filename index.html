@@ -1,10 +1,115 @@
-<!DOCTYPE html><html><head>
-    <title>Value to Words</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-  </head>
-  <body>
-    <div>
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Value to Words Translator - Sample</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css' />
+  <style>
+    .button-container {
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+  </style>
+</head>
+
+<body data-ng-app="app">
+  <div class="container" data-ng-controller="appController">
+    <div class="col-lg-12">
+      <h1>Value to word translation</h1>
+      <div class="form-group col-lg-6 col-md-8">
+        <div class="button-container">
+          <input class="btn btn-default" type='button' value='Translate All' data-ng-click='translateAll()'></input>
+        </div>
+        <ul class="list-group">
+          <li class="list-group-item" data-ng-repeat="entry in entries">
+            <div class="input-group input-group-sm">
+              <div>{{entry.text}}</div>
+              <input type='text' class="form-control" data-ng-model="entry.value" data-ng-change='translate(entry)' />
+              <label class="label label-default">{{entry.translation}}</label>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
-    <script src="jspm_packages/system.js"></script>
-    <script src="config.js"></script>
-</body></html>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.5/angular.min.js"></script>
+  <script src="./dist/vaow.js"></script>
+  <script>
+    var numberTranslator, timeTranslator;
+
+    function translateValue(value, type) {
+      var translator = getTranslator(type);
+      if (translator)
+        return translator.translate(value);
+      else {
+        throw 'type ' + type + ' not found';
+      }
+    }
+
+    function getTranslator(type) {
+      var translator;
+      switch (type) {
+        case 'number':
+          translator = getNumberTranslator();
+          break;
+        case 'time':
+          translator = getTimeTranslator();
+          break;
+      }
+      return translator;
+    }
+
+    function getTimeTranslator() {
+      if (!timeTranslator)
+        timeTranslator = new vaow.TimeTranslator();
+      return timeTranslator;
+    }
+
+    function getNumberTranslator() {
+      if (!numberTranslator)
+        numberTranslator = new vaow.NumberTranslator();
+      return numberTranslator;
+    }
+  </script>
+  <script>
+    var app = angular.module("app", [])
+    app.controller('appController', function($scope) {
+      $scope.entries = [{
+        text: 'Number',
+        value: 12000,
+        type: 'number',
+        translation: ''
+      }, {
+        text: 'Number',
+        value: 1208000,
+        type: 'number',
+        translation: ''
+      }, {
+        text: 'Number',
+        value: 10000000000,
+        type: 'number',
+        translation: ''
+      }, {
+        text: 'Time',
+        value: 10000000000,
+        type: 'time',
+        translation: ''
+      }];
+
+      $scope.translateAll = function() {
+        angular.forEach($scope.entries, function(entry) {
+          entry.translation = translateValue(entry.value, entry.type);
+        });
+      };
+
+      $scope.translate = function(entry) {
+        entry.translation = translateValue(entry.value, entry.type);
+      };
+    });
+  </script>
+</body>
+
+</html>

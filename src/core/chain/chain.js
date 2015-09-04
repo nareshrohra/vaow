@@ -33,7 +33,7 @@ export class Chain {
   }
 
   translate(value) {
-    if (this.head) {
+    if (this.isNotEmpty()) {
       return this.head.translate(value);
     } else {
       throw "Chain is empty";

@@ -23,6 +23,10 @@ describe('the NumberTranslator module', () => {
     expect(x => translator.translate("a")).toThrow();
   });
 
+  it('handles negative input', () => {
+    expect(x => translator.translate(-1)).toThrow();
+  });
+
   it('translates 100', () => {
     expect(translator.translate(100)).toBe('100');
   });

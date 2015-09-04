@@ -28,6 +28,10 @@ describe('the TimeTranslator module', () => {
     expect(x => translator.translate("a")).toThrow();
   });
 
+  it('handles negative input', () => {
+    expect(x => translator.translate(-1)).toThrow();
+  });
+
   it('translates 30 seconds', () => {
     expect(translator.translate(30)).toBe('30 seconds');
   });

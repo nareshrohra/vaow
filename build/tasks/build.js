@@ -7,7 +7,7 @@ var sourcemaps = require('gulp-sourcemaps');
 var paths = require('../paths');
 var compilerOptions = require('../babel-options');
 var assign = Object.assign || require('object.assign');
-var flatten = require('gulp-flatten');
+var concat = require('gulp-concat');
 
 // transpiles changed es6 files to SystemJS format
 // the plumber() call prevents 'pipe breaking' caused
@@ -15,21 +15,10 @@ var flatten = require('gulp-flatten');
 // https://www.npmjs.com/package/gulp-plumber
 gulp.task('build-system', function () {
   return gulp.src(paths.source)
-    .pipe(plumber())
-    .pipe(changed(paths.output, {extension: '.js'}))
-    .pipe(sourcemaps.init({loadMaps: true}))
-    .pipe(to5(assign({}, compilerOptions, {modules:'system'})))
-    .pipe(sourcemaps.write({includeContent: true}))
-    //.pipe(flatten())
-    .pipe(gulp.dest(paths.output));
-});
-
-// copies changed html files to the output directory
-gulp.task('build-html', function () {
-  return gulp.src(paths.html)
-    .pipe(changed(paths.output, {extension: '.html'}))
-    //.pipe(flatten())
-    .pipe(gulp.dest(paths.output));
+    .pipe(sourcemaps.init())
+    .pipe(to5({ modules: "amd" }))
+    .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest(paths.tmp));
 });
 
 // this task calls the clean task (located
@@ -39,7 +28,8 @@ gulp.task('build-html', function () {
 gulp.task('build', function(callback) {
   return runSequence(
     'clean',
-    ['build-system', 'build-html'],
+    'build-system',
+    'webpack',
     callback
   );
 });

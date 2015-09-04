@@ -27,12 +27,12 @@ export class TranslationChain {
     this.fallbackTranslator = fallbackTranslator || new FallbackTranslator();
   }
 
-  addUnit(unitChainElement) {
-    this.unitChain.addChainElement(unitChainElement);
+  addUnit(unit) {
+    this.unitChain.addChainElement(new TranslationChainElement(unit));
   }
 
-  addMagnitude(magnitudeChainElement) {
-    this.magnitudeChain.addChainElement(magnitudeChainElement);
+  addMagnitude(magnitude) {
+    this.magnitudeChain.addChainElement(new TranslationChainElement(magnitude));
   }
 
   isUnitChainNotEmpty() {

@@ -9,6 +9,8 @@ export class TranslationResultFormatter {
       unit = translationResult.getUnit(),
       magnitudes = translationResult.getMagnitudes();
 
-    return DigitFormatter.format(digitValue) + (magnitudes.length > 0 ? ' ' + magnitudes.join(' ') : '') + (unit ? ' ' + unit : '');
+    return DigitFormatter.format(digitValue) +
+      (magnitudes.length > 0 ? ' ' + magnitudes.reverse().join(' ') : '') +
+      (unit ? ' ' + unit : '');
   }
 }

@@ -24,7 +24,7 @@ export class NumberTranslator {
   }
 
   constructChain() {
-    TranslatorHelper.addMagnitudeChainElements(this.translationChain);
+    TranslatorHelper.addMagnitudes(this.translationChain);
   }
 
   translate(number) {

@@ -1,20 +1,20 @@
 import {
-  MagnitudeTranslationElement
+  Magnitudes
 }
-from '../core/constants/magnitude/translation-elements';
+from '../core/constants/magnitude/magnitudes';
 
 export class TranslatorHelper {
-  static addMagnitudeChainElements(translationChain) {
-    translationChain.addMagnitude(MagnitudeTranslationElement.Million);
-    translationChain.addMagnitude(MagnitudeTranslationElement.Billion);
-    translationChain.addMagnitude(MagnitudeTranslationElement.Trillion);
-    translationChain.addMagnitude(MagnitudeTranslationElement.Quadrillion);
-    translationChain.addMagnitude(MagnitudeTranslationElement.Quintillion);
-    translationChain.addMagnitude(MagnitudeTranslationElement.Sextillion);
-    translationChain.addMagnitude(MagnitudeTranslationElement.Septillion);
-    translationChain.addMagnitude(MagnitudeTranslationElement.Octillion);
-    translationChain.addMagnitude(MagnitudeTranslationElement.Nonillion);
-    translationChain.addMagnitude(MagnitudeTranslationElement.Decillion);
-    translationChain.addMagnitude(MagnitudeTranslationElement.Undecillion);
+  static addMagnitudes(translationChain) {
+    translationChain.addMagnitude(Magnitudes.Million);
+    translationChain.addMagnitude(Magnitudes.Billion);
+    translationChain.addMagnitude(Magnitudes.Trillion);
+    translationChain.addMagnitude(Magnitudes.Quadrillion);
+    translationChain.addMagnitude(Magnitudes.Quintillion);
+    translationChain.addMagnitude(Magnitudes.Sextillion);
+    translationChain.addMagnitude(Magnitudes.Septillion);
+    translationChain.addMagnitude(Magnitudes.Octillion);
+    translationChain.addMagnitude(Magnitudes.Nonillion);
+    translationChain.addMagnitude(Magnitudes.Decillion);
+    translationChain.addMagnitude(Magnitudes.Undecillion);
   }
 }
