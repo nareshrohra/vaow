@@ -1,7 +1,7 @@
 node_modules
 jspm_packages
 bower_components
-/tmp
+/.tmp
 .idea
 .DS_STORE
 /dist
