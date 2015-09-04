@@ -44,11 +44,7 @@ export class TimeTranslator {
     this.translationChain.addUnit(Time.Century);
   }
 
-  translate(number) {
-    if (number && !isNaN(number)) {
-      return this.translationChain.translate(Math.round(number));
-    } else {
-      throw new Error("number is invalid");
-    }
+  translate(time) {
+    return this.translationChain.translate(time);
   }
 }

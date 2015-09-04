@@ -1,15 +1,15 @@
 import {
   Chain
 }
-from '../../src/core/chain/chain';
+from '../../../../src/core/chain/chain';
 import {
   TranslationChainElement
 }
-from '../../src/core/chain/translation-chain-element';
+from '../../../../src/core/chain/translation-chain-element';
 import {
   Magnitude
 }
-from '../../src/core/types/magnitude';
+from '../../../../src/core/types/magnitude';
 
 let chain = null;
 let first = new TranslationChainElement(new Magnitude('Hundred', 100));

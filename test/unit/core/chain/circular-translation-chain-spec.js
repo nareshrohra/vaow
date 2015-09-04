@@ -2,22 +2,22 @@
 import {
   CircularTranslationChain
 }
-from '../../src/core/chain/circular-translation-chain';
+from '../../../../src/core/chain/circular-translation-chain';
 
 import {
   Magnitude
 }
-from '../../src/core/types/magnitude';
+from '../../../../src/core/types/magnitude';
 
 import {
   Unit
 }
-from '../../src/core/types/unit';
+from '../../../../src/core/types/unit';
 
 import {
   Magnitudes
 }
-from '../../src/core/constants/magnitude/magnitudes';
+from '../../../../src/core/constants/magnitude/magnitudes';
 
 let translationChain = null;
 
@@ -35,10 +35,14 @@ describe('the CircularTranslationChain module', () => {
   });
 
   it('handles string value', () => {
+    let grand = new Magnitude('grand', 1000);
+    translationChain.addMagnitude(grand);
     expect(x => translationChain.translate('a')).toThrow();
   });
 
   it('handles negative input', () => {
+    let grand = new Magnitude('grand', 1000);
+    translationChain.addMagnitude(grand);
     expect(x => translationChain.translate(-1)).toThrow();
   });
 

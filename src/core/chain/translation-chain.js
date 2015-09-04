@@ -45,11 +45,15 @@ export class TranslationChain {
 
   translate(value) {
     this.currentValue = value;
-    if (this.isUnitChainNotEmpty() || this.isMagnitudeChainNotEmpty()) {
-      this.performTranslation();
-      return this.finalResult.toString();
+    if (value && !isNaN(value) && value >= 0) {
+      if (this.isUnitChainNotEmpty() || this.isMagnitudeChainNotEmpty()) {
+        this.performTranslation();
+        return this.finalResult.toString();
+      } else {
+        throw 'Units and/or magnitudes are not added';
+      }
     } else {
-      throw 'Units and/or magnitudes are not added';
+      throw '${value} is not valid. Translation supported only for positive values';
     }
   }
 

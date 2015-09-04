@@ -1,17 +1,17 @@
 import {
   TimeTranslator
 }
-from '../../src/translators/time-translator';
+from '../../../src/translators/time-translator';
 
 import {
   Magnitudes
 }
-from '../../src/core/constants/magnitude/magnitudes';
+from '../../../src/core/constants/magnitude/magnitudes';
 
 import {
   Time
 }
-from '../../src/core/constants/time/units';
+from '../../../src/core/constants/time/units';
 
 let translator = null;
 

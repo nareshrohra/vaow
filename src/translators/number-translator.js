@@ -28,10 +28,6 @@ export class NumberTranslator {
   }
 
   translate(number) {
-    if (number && !isNaN(number)) {
-      return this.translationChain.translate(Math.round(number));
-    } else {
-      throw new Error("number is invalid");
-    }
+    return this.translationChain.translate(number);
   }
 }

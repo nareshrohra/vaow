@@ -1,12 +1,12 @@
 import {
   NumberTranslator
 }
-from '../../src/translators/number-translator';
+from '../../../src/translators/number-translator';
 
 import {
   Magnitudes
 }
-from '../../src/core/constants/magnitude/magnitudes';
+from '../../../src/core/constants/magnitude/magnitudes';
 
 let translator = null;
 
