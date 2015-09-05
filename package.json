@@ -1,7 +1,7 @@
 {
   "name": "vaow",
   "version": "0.0.1",
-  "description": "Value to words translator",
+  "description": "Translates value to words",
   "keywords": [
     "value",
     "number",
@@ -13,10 +13,12 @@
     "format"
   ],
   "homepage": "",
-  "bugs": {},
+  "bugs": {
+    "https://github.com/nareshrohra/vaow/issues"
+  },
   "license": "MIT",
   "author": "Naresh Rohra <naresh.rohra@hotmail.com> (http://nareshrohra.com/)",
-  "main": "dist/commonjs/index.js",
+  "main": "dist/vaow.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/nareshrohra/vaow"
