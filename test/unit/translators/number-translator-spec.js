@@ -27,6 +27,10 @@ describe('the NumberTranslator module', () => {
     expect(x => translator.translate(-1)).toThrow();
   });
 
+  it('translates 0', () => {
+    expect(translator.translate(0)).toBe('0');
+  });
+
   it('translates 100', () => {
     expect(translator.translate(100)).toBe('100');
   });

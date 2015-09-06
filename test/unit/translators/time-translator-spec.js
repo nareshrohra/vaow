@@ -32,6 +32,10 @@ describe('the TimeTranslator module', () => {
     expect(x => translator.translate(-1)).toThrow();
   });
 
+  it('translates 0 seconds', () => {
+    expect(translator.translate(0)).toBe('0 seconds');
+  });
+
   it('translates 30 seconds', () => {
     expect(translator.translate(30)).toBe('30 seconds');
   });

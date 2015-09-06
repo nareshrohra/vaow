@@ -45,7 +45,7 @@ export class TranslationChain {
 
   translate(value) {
     this.currentValue = value;
-    if (value && !isNaN(value) && value >= 0) {
+    if (typeof (value) !== "undefined" && value !== null && !isNaN(value) && value >= 0) {
       if (this.isUnitChainNotEmpty() || this.isMagnitudeChainNotEmpty()) {
         this.performTranslation();
         return this.finalResult.toString();
@@ -53,7 +53,7 @@ export class TranslationChain {
         throw 'Units and/or magnitudes are not added';
       }
     } else {
-      throw '${value} is not valid. Translation supported only for positive values';
+      throw value + ' is not valid. Translation supported only for positive values';
     }
   }
 
