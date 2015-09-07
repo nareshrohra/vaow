@@ -1,8 +1,8 @@
 
 import {
-  CircularTranslationChain
+  TranslationChain
 }
-from '../../../../src/core/chain/circular-translation-chain';
+from '../../../../src/core/chain/translation-chain';
 
 import {
   Magnitude
@@ -22,10 +22,10 @@ from '../../../../src/core/constants/magnitude/magnitudes';
 let translationChain = null;
 
 beforeEach(() => {
-  translationChain = new CircularTranslationChain();
+  translationChain = new TranslationChain();
 });
 
-describe('the CircularTranslationChain module', () => {
+describe('the TranslationChain module', () => {
   it('handles empty chain', () => {
     expect(x => translationChain.translate(1000)).toThrow();
   });
@@ -64,7 +64,16 @@ describe('the CircularTranslationChain module', () => {
     translationChain.addMagnitude(Magnitudes.Trillion);
 
     let value = Magnitudes.Million.getValue() * Magnitudes.Trillion.getValue();
-    expect(translationChain.translate(value)).toBe("1 million trillion");
+    expect(translationChain.translate(value)).toBe("1 x 10^6 trillion");
+  });
+
+  it('translates a very large value', () => {
+    translationChain.addMagnitude(Magnitudes.Million);
+    translationChain.addMagnitude(Magnitudes.Billion);
+    translationChain.addMagnitude(Magnitudes.Trillion);
+
+    let value = Magnitudes.Million.getValue() * Magnitudes.Decillion.getValue();
+    expect(translationChain.translate(value)).toBe("1 x 10^27 trillion");
   });
 
   it('translates with units and magnitudes', () => {

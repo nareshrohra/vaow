@@ -4,19 +4,37 @@ import {
 from '../core/formatters/digit-formatter';
 
 export class FallbackTranslator {
-  static translate(value) {
+  translate(value) {
+    let translationStrategy;
     let translatedValue = value.toString();
-    let mantissa = this.getMantissa(translatedValue),
-      exponent = this.getExponent(translatedValue);
-    return DigitFormatter.format(mantissa) + (exponent > 1 ? ' X 10^' + exponent : '');
+    if (translatedValue.indexOf('e+') !== -1) {
+      translationStrategy = new HighExponentTranslationStrategy();
+    } else {
+      translationStrategy = new LowExponentTranslationStrategy();
+    }
+    return translationStrategy.translate(value);
   }
+}
 
-  static getExponent(translatedValue) {
-    return translatedValue.substring(translatedValue.indexOf("+") + 1);
+class LowExponentTranslationStrategy {
+  translate(value) {
+    let translatedValue = value.toString();
+    let factorExponent = translatedValue.length - 1;
+    if (factorExponent > 2) {
+      let factor = Math.pow(10, factorExponent);
+      return Math.round(value / factor).toString() + ' x 10^' + factorExponent.toString();
+    } else {
+      return translatedValue;
+    }
   }
+}
 
-  static getMantissa(translatedValue) {
-    let decimalPosition = translatedValue.indexOf('.');
-    return translatedValue;
+class HighExponentTranslationStrategy {
+  translate(value) {
+    let translatedValue = value.toString();
+    let exponentIndex = translatedValue.indexOf('e+');
+    let exponent = translatedValue.substring(exponentIndex);
+    let mantissa = translatedValue.substring(0, exponentIndex);
+    return Math.round(parseInt(mantissa)).toString() + exponent.replace('e+', ' x 10^');
   }
 }

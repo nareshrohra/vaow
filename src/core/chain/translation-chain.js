@@ -102,6 +102,6 @@ export class TranslationChain {
 
   performFallbackTranslation(value) {
     let result = this.fallbackTranslator.translate(this.currentValue);
-    this.finalResult.setDigitValue(result.digitValue);
+    this.finalResult.setDigitValue(result);
   }
 }

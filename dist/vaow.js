@@ -247,7 +247,7 @@
 	      key: 'performFallbackTranslation',
 	      value: function performFallbackTranslation(value) {
 	        var result = this.fallbackTranslator.translate(this.currentValue);
-	        this.finalResult.setDigitValue(result.digitValue);
+	        this.finalResult.setDigitValue(result);
 	      }
 	    }]);
 
@@ -568,24 +568,17 @@
 	      _classCallCheck(this, FallbackTranslator);
 	    }
 
-	    _createClass(FallbackTranslator, null, [{
+	    _createClass(FallbackTranslator, [{
 	      key: 'translate',
 	      value: function translate(value) {
+	        var translationStrategy = undefined;
 	        var translatedValue = value.toString();
-	        var mantissa = this.getMantissa(translatedValue),
-	            exponent = this.getExponent(translatedValue);
-	        return _coreFormattersDigitFormatter.DigitFormatter.format(mantissa) + (exponent > 1 ? ' X 10^' + exponent : '');
-	      }
-	    }, {
-	      key: 'getExponent',
-	      value: function getExponent(translatedValue) {
-	        return translatedValue.substring(translatedValue.indexOf("+") + 1);
-	      }
-	    }, {
-	      key: 'getMantissa',
-	      value: function getMantissa(translatedValue) {
-	        var decimalPosition = translatedValue.indexOf('.');
-	        return translatedValue;
+	        if (translatedValue.indexOf('e+') !== -1) {
+	          translationStrategy = new HighExponentTranslationStrategy();
+	        } else {
+	          translationStrategy = new LowExponentTranslationStrategy();
+	        }
+	        return translationStrategy.translate(value);
 	      }
 	    }]);
 
@@ -593,6 +586,47 @@
 	  })();
 
 	  exports.FallbackTranslator = FallbackTranslator;
+
+	  var LowExponentTranslationStrategy = (function () {
+	    function LowExponentTranslationStrategy() {
+	      _classCallCheck(this, LowExponentTranslationStrategy);
+	    }
+
+	    _createClass(LowExponentTranslationStrategy, [{
+	      key: 'translate',
+	      value: function translate(value) {
+	        var translatedValue = value.toString();
+	        var factorExponent = translatedValue.length - 1;
+	        if (factorExponent > 2) {
+	          var factor = Math.pow(10, factorExponent);
+	          return Math.round(value / factor).toString() + ' x 10^' + factorExponent.toString();
+	        } else {
+	          return translatedValue;
+	        }
+	      }
+	    }]);
+
+	    return LowExponentTranslationStrategy;
+	  })();
+
+	  var HighExponentTranslationStrategy = (function () {
+	    function HighExponentTranslationStrategy() {
+	      _classCallCheck(this, HighExponentTranslationStrategy);
+	    }
+
+	    _createClass(HighExponentTranslationStrategy, [{
+	      key: 'translate',
+	      value: function translate(value) {
+	        var translatedValue = value.toString();
+	        var exponentIndex = translatedValue.indexOf('e+');
+	        var exponent = translatedValue.substring(exponentIndex);
+	        var mantissa = translatedValue.substring(0, exponentIndex);
+	        return Math.round(parseInt(mantissa)).toString() + exponent.replace('e+', ' x 10^');
+	      }
+	    }]);
+
+	    return HighExponentTranslationStrategy;
+	  })();
 	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	//# sourceMappingURL=../translators/fallback-translator.js.map
 
