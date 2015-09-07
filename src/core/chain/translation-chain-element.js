@@ -7,6 +7,9 @@ from '../types/translation-result';
 
 export class TranslationChainElement {
   constructor(base) {
+    if(typeof base === 'undefined' || base == null) {
+      throw 'Invalid argument "base"';
+    }
     this.translationBase = base;
     this.nextElement = null;
   }
