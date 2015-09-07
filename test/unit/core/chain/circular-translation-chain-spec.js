@@ -25,27 +25,7 @@ beforeEach(() => {
   translationChain = new CircularTranslationChain();
 });
 
-describe('the CircularTranslationChain module', () => {
-  it('handles empty chain', () => {
-    expect(x => translationChain.translate(1000)).toThrow();
-  });
-
-  it('handles null value', () => {
-    expect(x => translationChain.translate(null)).toThrow();
-  });
-
-  it('handles string value', () => {
-    let grand = new Magnitude('grand', 1000);
-    translationChain.addMagnitude(grand);
-    expect(x => translationChain.translate('a')).toThrow();
-  });
-
-  it('handles negative input', () => {
-    let grand = new Magnitude('grand', 1000);
-    translationChain.addMagnitude(grand);
-    expect(x => translationChain.translate(-1)).toThrow();
-  });
-
+describe('the CircularTranslationChain class', () => {
   it('translates 0', () => {
     let grand = new Magnitude('grand', 1000);
     translationChain.addMagnitude(grand);

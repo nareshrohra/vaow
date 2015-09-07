@@ -26,14 +26,28 @@ import {
 }
 from '../../../../src/core/types/translation-result';
 
-describe('the TranslationChainElement module', () => {
-  it('handles passing base as null', () => {
-    expect(x => new TranslationChainElement(null)).toThrow('Invalid argument "base"');
+let invalidArgBaseError = 'Invalid argument for "base"';
+let invalidArgNextElementError = 'Invalid argument for "nextElement"';
+
+describe('the TranslationChainElement class', () => {
+  it('handles null value for base', () => {
+    expect(x => new TranslationChainElement(null)).toThrow(invalidArgBaseError);
   });
 
-  it('handles passing base as undefined', () => {
+  it('handles undefined value for base', () => {
     let testObj = {};
-    expect(x => new TranslationChainElement(testObj.notDefined)).toThrow('Invalid argument "base"');
+    expect(x => new TranslationChainElement(testObj.notDefined)).toThrow(invalidArgBaseError);
+  });
+
+  it('handles null value for setting next element', () => {
+    let translationChainElement = new TranslationChainElement(Magnitudes.Million);
+    expect(x => translationChainElement.setNextElement(null)).toThrow(invalidArgNextElementError);
+  });
+
+  it('handles undefined value for setting next element', () => {
+    let translationChainElement = new TranslationChainElement(Magnitudes.Million);
+    let testObj = {};
+    expect(x => translationChainElement.setNextElement(testObj.notDefined)).toThrow(invalidArgNextElementError);
   });
 
   it('gets value', () => {

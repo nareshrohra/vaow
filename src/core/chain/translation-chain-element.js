@@ -1,4 +1,9 @@
 import {
+  Validator
+}
+from '../../util/validator';
+
+import {
   UnderflowElementTranslationResult,
   OverflowElementTranslationResult,
   ElementTranslationResult
@@ -7,11 +12,12 @@ from '../types/translation-result';
 
 export class TranslationChainElement {
   constructor(base) {
-    if(typeof base === 'undefined' || base == null) {
-      throw 'Invalid argument "base"';
+    if (Validator.isDefinedAndNotNull(base)) {
+      this.translationBase = base;
+      this.nextElement = null;
+    } else {
+      throw 'Invalid argument for "base"';
     }
-    this.translationBase = base;
-    this.nextElement = null;
   }
 
   getValue() {
@@ -23,7 +29,11 @@ export class TranslationChainElement {
   }
 
   setNextElement(nextElement) {
-    this.nextElement = nextElement;
+    if (Validator.isDefinedAndNotNull(nextElement)) {
+      this.nextElement = nextElement;
+    } else {
+      throw 'Invalid argument for "nextElement"';
+    }
   }
 
   translate(value) {

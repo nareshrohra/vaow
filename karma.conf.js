@@ -17,6 +17,7 @@ module.exports = function(config) {
       loadFiles: [
         'src/core/**/*.js',
         'src/translators/**/*.js',
+        'src/util/**/*.js',
         'test/unit/**/*.js'
       ],
       paths: {

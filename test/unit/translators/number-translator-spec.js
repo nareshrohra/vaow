@@ -9,22 +9,28 @@ import {
 from '../../../src/core/constants/magnitude/magnitudes';
 
 let translator = null;
+let invalidArgValueError = 'Invalid argument for "value". value should be a positive number';
 
 beforeEach(() => {
-  translator = new NumberTranslator.getInstance();
+  translator = new NumberTranslator();
 });
 
-describe('the NumberTranslator module', () => {
+describe('the NumberTranslator class', () => {
   it('handles null input', () => {
-    expect(x => translator.translate(null)).toThrow();
+    expect(x => translator.translate(null)).toThrow(invalidArgValueError);
+  });
+
+  it('handles undefined value', () => {
+    let test = {};
+    expect(x => translator.translate(test.notDefined)).toThrow(invalidArgValueError);
   });
 
   it('handles string input', () => {
-    expect(x => translator.translate("a")).toThrow();
+    expect(x => translator.translate("a")).toThrow(invalidArgValueError);
   });
 
   it('handles negative input', () => {
-    expect(x => translator.translate(-1)).toThrow();
+    expect(x => translator.translate(-1)).toThrow(invalidArgValueError);
   });
 
   it('translates 0', () => {

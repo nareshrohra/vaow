@@ -3,23 +3,40 @@ import {
 }
 from '../formatters/translation-result-formatter';
 
+import {
+  Validator
+}
+from '../../util/validator';
+
 export class TranslationResult {
   constructor() {
-    this.digitValue = 0;
+    this.digitValue = '0';
     this.unit = '';
     this.magnitudes = [];
   }
 
   setDigitValue(digitValue) {
-    this.digitValue = digitValue;
+    if (Validator.isDefinedAndNotNull(digitValue)) {
+      this.digitValue = digitValue;
+    } else {
+      throw 'Invalid argument for "digitValue"';
+    }
   }
 
   setUnit(unit) {
-    this.unit = unit;
+    if (Validator.isDefinedAndNotNull(unit)) {
+      this.unit = unit;
+    } else {
+      throw 'Invalid argument for "unit"'
+    }
   }
 
   increaseByMagnitude(magnitude) {
-    this.magnitudes.push(magnitude);
+    if (Validator.isDefinedAndNotNull(magnitude)) {
+      this.magnitudes.push(magnitude);
+    } else {
+      throw 'Invalid argument for "magnitude"';
+    }
   }
 
   getUnit() {
@@ -41,10 +58,22 @@ export class TranslationResult {
 
 export class ElementTranslationResult {
   constructor(digitValue, word) {
+    this.validate(digitValue, word);
+
     this.digitValue = digitValue;
     this.word = word;
     this.overflow = false;
     this.underflow = false;
+  }
+
+  validate(digitValue, word) {
+    if (!Validator.isNumber(digitValue)) {
+      throw 'Invalid argument for "digitValue". value should be a number';
+    }
+
+    if (!Validator.isDefinedAndNotNull(word)) {
+      throw 'Invalid argument for "word"';
+    }
   }
 
   setOverflow() {

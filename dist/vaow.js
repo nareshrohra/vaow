@@ -48,7 +48,7 @@
 	  //TODO: Fix this hack
 	  'use strict';
 
-	  !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1), __webpack_require__(2), __webpack_require__(8), __webpack_require__(3), __webpack_require__(9), __webpack_require__(13)], __WEBPACK_AMD_DEFINE_RESULT__ = function (chain, translationChain, circularTranslationChain, translationChainElement, numberTranslator, timeTranslator) {
+	  !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1), __webpack_require__(3), __webpack_require__(9), __webpack_require__(4), __webpack_require__(10), __webpack_require__(14)], __WEBPACK_AMD_DEFINE_RESULT__ = function (chain, translationChain, circularTranslationChain, translationChainElement, numberTranslator, timeTranslator) {
 	    window.vaow = {
 	      Chain: chain.Chain,
 	      TranslationChain: translationChain.TranslationChain,
@@ -65,16 +65,16 @@
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports) {
-	  "use strict";
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(2)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _utilValidator) {
+	  'use strict';
 
-	  Object.defineProperty(exports, "__esModule", {
+	  Object.defineProperty(exports, '__esModule', {
 	    value: true
 	  });
 
-	  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-	  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 	  var Chain = (function () {
 	    function Chain() {
@@ -84,47 +84,55 @@
 	    }
 
 	    _createClass(Chain, [{
-	      key: "isNotEmpty",
+	      key: 'isNotEmpty',
 	      value: function isNotEmpty() {
 	        return this.head !== null;
 	      }
 	    }, {
-	      key: "getHead",
+	      key: 'getHead',
 	      value: function getHead() {
 	        return this.head;
 	      }
 	    }, {
-	      key: "getTail",
+	      key: 'getTail',
 	      value: function getTail() {
 	        return this.tail;
 	      }
 	    }, {
-	      key: "setChainStart",
+	      key: 'setChainStart',
 	      value: function setChainStart(firstElement) {
 	        this.head = this.tail = firstElement;
 	      }
 	    }, {
-	      key: "addChainElement",
+	      key: 'addChainElement',
 	      value: function addChainElement(chainElement) {
-	        if (this.head) {
-	          this.appendToChain(chainElement);
+	        if (_utilValidator.Validator.isDefinedAndNotNull(chainElement)) {
+	          if (this.head) {
+	            this.appendToChain(chainElement);
+	          } else {
+	            this.setChainStart(chainElement);
+	          }
 	        } else {
-	          this.setChainStart(chainElement);
+	          throw 'Invalid argument for "chainElement"';
 	        }
 	      }
 	    }, {
-	      key: "appendToChain",
+	      key: 'appendToChain',
 	      value: function appendToChain(chainElement) {
 	        this.tail.setNextElement(chainElement);
 	        this.tail = chainElement;
 	      }
 	    }, {
-	      key: "translate",
+	      key: 'translate',
 	      value: function translate(value) {
-	        if (this.isNotEmpty()) {
-	          return this.head.translate(value);
+	        if (_utilValidator.Validator.isPositiveNumber(value)) {
+	          if (this.isNotEmpty()) {
+	            return this.head.translate(value);
+	          } else {
+	            throw 'Chain is empty';
+	          }
 	        } else {
-	          throw "Chain is empty";
+	          throw 'Invalid argument for "value". value should be a positive number';
 	        }
 	      }
 	    }]);
@@ -140,7 +148,51 @@
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(1), __webpack_require__(3), __webpack_require__(7), __webpack_require__(4)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _chain, _translationChainElement, _translatorsFallbackTranslator, _typesTranslationResult) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports) {
+	  "use strict";
+
+	  Object.defineProperty(exports, "__esModule", {
+	    value: true
+	  });
+
+	  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	  var Validator = (function () {
+	    function Validator() {
+	      _classCallCheck(this, Validator);
+	    }
+
+	    _createClass(Validator, null, [{
+	      key: "isDefinedAndNotNull",
+	      value: function isDefinedAndNotNull(value) {
+	        return typeof value !== "undefined" && value !== null;
+	      }
+	    }, {
+	      key: "isPositiveNumber",
+	      value: function isPositiveNumber(value) {
+	        return Validator.isDefinedAndNotNull(value) && !isNaN(value) && value >= 0;
+	      }
+	    }, {
+	      key: "isNumber",
+	      value: function isNumber(value) {
+	        return Validator.isDefinedAndNotNull(value) && !isNaN(value);
+	      }
+	    }]);
+
+	    return Validator;
+	  })();
+
+	  exports.Validator = Validator;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	//# sourceMappingURL=../util/validator.js.map
+
+/***/ },
+/* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(2), __webpack_require__(1), __webpack_require__(4), __webpack_require__(8), __webpack_require__(5)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _utilValidator, _chain, _translationChainElement, _translatorsExponentTranslator, _typesTranslationResult) {
 	  'use strict';
 
 	  Object.defineProperty(exports, '__esModule', {
@@ -159,18 +211,26 @@
 	      this.magnitudeChain = new _chain.Chain();
 	      this.finalResult = null;
 	      this.currentValue = null;
-	      this.fallbackTranslator = fallbackTranslator || new _translatorsFallbackTranslator.FallbackTranslator();
+	      this.fallbackTranslator = fallbackTranslator || new _translatorsExponentTranslator.ExponentTranslator();
 	    }
 
 	    _createClass(TranslationChain, [{
 	      key: 'addUnit',
 	      value: function addUnit(unit) {
-	        this.unitChain.addChainElement(new _translationChainElement.TranslationChainElement(unit));
+	        if (_utilValidator.Validator.isDefinedAndNotNull(unit)) {
+	          this.unitChain.addChainElement(new _translationChainElement.TranslationChainElement(unit));
+	        } else {
+	          throw 'Invalid argument for unit';
+	        }
 	      }
 	    }, {
 	      key: 'addMagnitude',
 	      value: function addMagnitude(magnitude) {
-	        this.magnitudeChain.addChainElement(new _translationChainElement.TranslationChainElement(magnitude));
+	        if (_utilValidator.Validator.isDefinedAndNotNull(magnitude)) {
+	          this.magnitudeChain.addChainElement(new _translationChainElement.TranslationChainElement(magnitude));
+	        } else {
+	          throw 'Invalid argument for magnitude';
+	        }
 	      }
 	    }, {
 	      key: 'isUnitChainNotEmpty',
@@ -186,7 +246,7 @@
 	      key: 'translate',
 	      value: function translate(value) {
 	        this.currentValue = value;
-	        if (typeof value !== "undefined" && value !== null && !isNaN(value) && value >= 0) {
+	        if (_utilValidator.Validator.isPositiveNumber(value)) {
 	          if (this.isUnitChainNotEmpty() || this.isMagnitudeChainNotEmpty()) {
 	            this.performTranslation();
 	            return this.finalResult.toString();
@@ -194,7 +254,7 @@
 	            throw 'Units and/or magnitudes are not added';
 	          }
 	        } else {
-	          throw value + ' is not valid. Translation supported only for positive values';
+	          throw 'Invalid argument for "value". value should be a positive number';
 	        }
 	      }
 	    }, {
@@ -259,10 +319,10 @@
 	//# sourceMappingURL=../../core/chain/translation-chain.js.map
 
 /***/ },
-/* 3 */
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(4)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _typesTranslationResult) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(2), __webpack_require__(5)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _utilValidator, _typesTranslationResult) {
 	  'use strict';
 
 	  Object.defineProperty(exports, '__esModule', {
@@ -277,8 +337,12 @@
 	    function TranslationChainElement(base) {
 	      _classCallCheck(this, TranslationChainElement);
 
-	      this.translationBase = base;
-	      this.nextElement = null;
+	      if (_utilValidator.Validator.isDefinedAndNotNull(base)) {
+	        this.translationBase = base;
+	        this.nextElement = null;
+	      } else {
+	        throw 'Invalid argument for "base"';
+	      }
 	    }
 
 	    _createClass(TranslationChainElement, [{
@@ -294,7 +358,11 @@
 	    }, {
 	      key: 'setNextElement',
 	      value: function setNextElement(nextElement) {
-	        this.nextElement = nextElement;
+	        if (_utilValidator.Validator.isDefinedAndNotNull(nextElement)) {
+	          this.nextElement = nextElement;
+	        } else {
+	          throw 'Invalid argument for "nextElement"';
+	        }
 	      }
 	    }, {
 	      key: 'translate',
@@ -328,10 +396,10 @@
 	//# sourceMappingURL=../../core/chain/translation-chain-element.js.map
 
 /***/ },
-/* 4 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(5)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _formattersTranslationResultFormatter) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(6), __webpack_require__(2)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _formattersTranslationResultFormatter, _utilValidator) {
 	  'use strict';
 
 	  Object.defineProperty(exports, '__esModule', {
@@ -350,7 +418,7 @@
 	    function TranslationResult() {
 	      _classCallCheck(this, TranslationResult);
 
-	      this.digitValue = 0;
+	      this.digitValue = '0';
 	      this.unit = '';
 	      this.magnitudes = [];
 	    }
@@ -358,17 +426,29 @@
 	    _createClass(TranslationResult, [{
 	      key: 'setDigitValue',
 	      value: function setDigitValue(digitValue) {
-	        this.digitValue = digitValue;
+	        if (_utilValidator.Validator.isDefinedAndNotNull(digitValue)) {
+	          this.digitValue = digitValue;
+	        } else {
+	          throw 'Invalid argument for "digitValue"';
+	        }
 	      }
 	    }, {
 	      key: 'setUnit',
 	      value: function setUnit(unit) {
-	        this.unit = unit;
+	        if (_utilValidator.Validator.isDefinedAndNotNull(unit)) {
+	          this.unit = unit;
+	        } else {
+	          throw 'Invalid argument for "unit"';
+	        }
 	      }
 	    }, {
 	      key: 'increaseByMagnitude',
 	      value: function increaseByMagnitude(magnitude) {
-	        this.magnitudes.push(magnitude);
+	        if (_utilValidator.Validator.isDefinedAndNotNull(magnitude)) {
+	          this.magnitudes.push(magnitude);
+	        } else {
+	          throw 'Invalid argument for "magnitude"';
+	        }
 	      }
 	    }, {
 	      key: 'getUnit',
@@ -401,6 +481,8 @@
 	    function ElementTranslationResult(digitValue, word) {
 	      _classCallCheck(this, ElementTranslationResult);
 
+	      this.validate(digitValue, word);
+
 	      this.digitValue = digitValue;
 	      this.word = word;
 	      this.overflow = false;
@@ -408,6 +490,17 @@
 	    }
 
 	    _createClass(ElementTranslationResult, [{
+	      key: 'validate',
+	      value: function validate(digitValue, word) {
+	        if (!_utilValidator.Validator.isNumber(digitValue)) {
+	          throw 'Invalid argument for "digitValue". value should be a number';
+	        }
+
+	        if (!_utilValidator.Validator.isDefinedAndNotNull(word)) {
+	          throw 'Invalid argument for "word"';
+	        }
+	      }
+	    }, {
 	      key: 'setOverflow',
 	      value: function setOverflow() {
 	        this.overflow = true;
@@ -477,10 +570,10 @@
 	//# sourceMappingURL=../../core/types/translation-result.js.map
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(6)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _digitFormatter) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(7), __webpack_require__(2)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _numberFormatter, _utilValidator) {
 	  'use strict';
 
 	  Object.defineProperty(exports, '__esModule', {
@@ -499,11 +592,15 @@
 	    _createClass(TranslationResultFormatter, null, [{
 	      key: 'format',
 	      value: function format(translationResult) {
-	        var digitValue = translationResult.getDigitValue(),
-	            unit = translationResult.getUnit(),
-	            magnitudes = translationResult.getMagnitudes();
+	        if (_utilValidator.Validator.isDefinedAndNotNull(translationResult)) {
+	          var digitValue = translationResult.getDigitValue(),
+	              unit = translationResult.getUnit(),
+	              magnitudes = translationResult.getMagnitudes();
 
-	        return _digitFormatter.DigitFormatter.format(digitValue) + (magnitudes.length > 0 ? ' ' + magnitudes.reverse().join(' ') : '') + (unit ? ' ' + unit : '');
+	          return _numberFormatter.NumberFormatter.format(digitValue) + (magnitudes.length > 0 ? ' ' + magnitudes.reverse().join(' ') : '') + (unit ? ' ' + unit : '');
+	        } else {
+	          throw 'Invalid argument for "translationResult"';
+	        }
 	      }
 	    }]);
 
@@ -515,44 +612,10 @@
 	//# sourceMappingURL=../../core/formatters/translation-result-formatter.js.map
 
 /***/ },
-/* 6 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports) {
-	  "use strict";
-
-	  Object.defineProperty(exports, "__esModule", {
-	    value: true
-	  });
-
-	  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	  var DigitFormatter = (function () {
-	    function DigitFormatter() {
-	      _classCallCheck(this, DigitFormatter);
-	    }
-
-	    _createClass(DigitFormatter, null, [{
-	      key: "format",
-	      value: function format(value) {
-	        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-	      }
-	    }]);
-
-	    return DigitFormatter;
-	  })();
-
-	  exports.DigitFormatter = DigitFormatter;
-	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	//# sourceMappingURL=../../core/formatters/digit-formatter.js.map
-
-/***/ },
 /* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(6)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _coreFormattersDigitFormatter) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(2)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _utilValidator) {
 	  'use strict';
 
 	  Object.defineProperty(exports, '__esModule', {
@@ -563,29 +626,71 @@
 
 	  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-	  var FallbackTranslator = (function () {
-	    function FallbackTranslator() {
-	      _classCallCheck(this, FallbackTranslator);
+	  var NumberFormatter = (function () {
+	    function NumberFormatter() {
+	      _classCallCheck(this, NumberFormatter);
 	    }
 
-	    _createClass(FallbackTranslator, [{
-	      key: 'translate',
-	      value: function translate(value) {
-	        var translationStrategy = undefined;
-	        var translatedValue = value.toString();
-	        if (translatedValue.indexOf('e+') !== -1) {
-	          translationStrategy = new HighExponentTranslationStrategy();
+	    _createClass(NumberFormatter, null, [{
+	      key: 'format',
+	      value: function format(value) {
+	        if (_utilValidator.Validator.isDefinedAndNotNull(value)) {
+	          return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	        } else {
-	          translationStrategy = new LowExponentTranslationStrategy();
+	          throw 'Invalid argument for "value"';
 	        }
-	        return translationStrategy.translate(value);
 	      }
 	    }]);
 
-	    return FallbackTranslator;
+	    return NumberFormatter;
 	  })();
 
-	  exports.FallbackTranslator = FallbackTranslator;
+	  exports.NumberFormatter = NumberFormatter;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	//# sourceMappingURL=../../core/formatters/number-formatter.js.map
+
+/***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(2), __webpack_require__(7)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _utilValidator, _coreFormattersNumberFormatter) {
+	  'use strict';
+
+	  Object.defineProperty(exports, '__esModule', {
+	    value: true
+	  });
+
+	  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	  var ExponentTranslator = (function () {
+	    function ExponentTranslator() {
+	      _classCallCheck(this, ExponentTranslator);
+	    }
+
+	    _createClass(ExponentTranslator, [{
+	      key: 'translate',
+	      value: function translate(value) {
+	        if (_utilValidator.Validator.isPositiveNumber(value)) {
+	          var translationStrategy = undefined;
+	          var translatedValue = value.toString();
+	          if (translatedValue.indexOf('e+') !== -1) {
+	            translationStrategy = new HighExponentTranslationStrategy();
+	          } else {
+	            translationStrategy = new LowExponentTranslationStrategy();
+	          }
+	          return translationStrategy.translate(value);
+	        } else {
+	          throw 'Invalid argument for "value". value should be a positive number';
+	        }
+	      }
+	    }]);
+
+	    return ExponentTranslator;
+	  })();
+
+	  exports.ExponentTranslator = ExponentTranslator;
 
 	  var LowExponentTranslationStrategy = (function () {
 	    function LowExponentTranslationStrategy() {
@@ -628,13 +733,13 @@
 	    return HighExponentTranslationStrategy;
 	  })();
 	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	//# sourceMappingURL=../translators/fallback-translator.js.map
+	//# sourceMappingURL=../translators/exponent-translator.js.map
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(2)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _translationChain) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(3)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _translationChain) {
 	  'use strict';
 
 	  Object.defineProperty(exports, '__esModule', {
@@ -684,10 +789,10 @@
 	//# sourceMappingURL=../../core/chain/circular-translation-chain.js.map
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(10), __webpack_require__(8)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _translatorHelper, _coreChainCircularTranslationChain) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(11), __webpack_require__(9)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _translatorHelper, _coreChainCircularTranslationChain) {
 	  'use strict';
 
 	  Object.defineProperty(exports, '__esModule', {
@@ -736,10 +841,10 @@
 	//# sourceMappingURL=../translators/number-translator.js.map
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(11)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _coreConstantsMagnitudeMagnitudes) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(12)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _coreConstantsMagnitudeMagnitudes) {
 	  'use strict';
 
 	  Object.defineProperty(exports, '__esModule', {
@@ -780,10 +885,10 @@
 	//# sourceMappingURL=../translators/translator-helper.js.map
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(12)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _typesMagnitude) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(13)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _typesMagnitude) {
 	  'use strict';
 
 	  Object.defineProperty(exports, '__esModule', {
@@ -814,35 +919,44 @@
 	//# sourceMappingURL=../../../core/constants/magnitude/magnitudes.js.map
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports) {
-	  "use strict";
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(2)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _utilValidator) {
+	  'use strict';
 
-	  Object.defineProperty(exports, "__esModule", {
+	  Object.defineProperty(exports, '__esModule', {
 	    value: true
 	  });
 
-	  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-	  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 	  var Magnitude = (function () {
 	    function Magnitude(word, value) {
 	      _classCallCheck(this, Magnitude);
+
+	      this.validate(word, value);
 
 	      this.word = word;
 	      this.value = value;
 	    }
 
 	    _createClass(Magnitude, [{
-	      key: "getWord",
+	      key: 'validate',
+	      value: function validate(word, value) {
+	        if (!_utilValidator.Validator.isDefinedAndNotNull(word)) throw 'Invalid argument for "word"';
+
+	        if (!_utilValidator.Validator.isPositiveNumber(value)) throw 'Invalid argument for "value". value should be a positive number';
+	      }
+	    }, {
+	      key: 'getWord',
 	      value: function getWord() {
 	        return this.word;
 	      }
 	    }, {
-	      key: "getValue",
+	      key: 'getValue',
 	      value: function getValue() {
 	        return this.value;
 	      }
@@ -856,10 +970,10 @@
 	//# sourceMappingURL=../../core/types/magnitude.js.map
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(10), __webpack_require__(8), __webpack_require__(14)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _translatorHelper, _coreChainCircularTranslationChain, _coreConstantsTimeUnits) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(11), __webpack_require__(9), __webpack_require__(15)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _translatorHelper, _coreChainCircularTranslationChain, _coreConstantsTimeUnits) {
 	  'use strict';
 
 	  Object.defineProperty(exports, '__esModule', {
@@ -921,10 +1035,10 @@
 	//# sourceMappingURL=../translators/time-translator.js.map
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(15)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _typesUnit) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(16)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _typesUnit) {
 	  'use strict';
 
 	  Object.defineProperty(exports, '__esModule', {
@@ -951,35 +1065,44 @@
 	//# sourceMappingURL=../../../core/constants/time/units.js.map
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports) {
-	  "use strict";
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(2)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _utilValidator) {
+	  'use strict';
 
-	  Object.defineProperty(exports, "__esModule", {
+	  Object.defineProperty(exports, '__esModule', {
 	    value: true
 	  });
 
-	  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-	  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 	  var Unit = (function () {
 	    function Unit(word, value) {
 	      _classCallCheck(this, Unit);
+
+	      this.validate(word, value);
 
 	      this.word = word;
 	      this.value = value;
 	    }
 
 	    _createClass(Unit, [{
-	      key: "getWord",
+	      key: 'validate',
+	      value: function validate(word, value) {
+	        if (!_utilValidator.Validator.isDefinedAndNotNull(word)) throw 'Invalid argument for "word"';
+
+	        if (!_utilValidator.Validator.isPositiveNumber(value)) throw 'Invalid argument for "value". value should be a positive number';
+	      }
+	    }, {
+	      key: 'getWord',
 	      value: function getWord() {
 	        return this.word;
 	      }
 	    }, {
-	      key: "getValue",
+	      key: 'getValue',
 	      value: function getValue() {
 	        return this.value;
 	      }

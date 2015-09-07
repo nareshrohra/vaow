@@ -1,3 +1,8 @@
+import {
+  Validator
+}
+from '../../util/validator';
+
 export class Chain {
   constructor() {
     this.setChainStart(null);
@@ -20,10 +25,14 @@ export class Chain {
   }
 
   addChainElement(chainElement) {
-    if (this.head) {
-      this.appendToChain(chainElement);
+    if (Validator.isDefinedAndNotNull(chainElement)) {
+      if (this.head) {
+        this.appendToChain(chainElement);
+      } else {
+        this.setChainStart(chainElement);
+      }
     } else {
-      this.setChainStart(chainElement);
+      throw 'Invalid argument for "chainElement"';
     }
   }
 
@@ -33,10 +42,14 @@ export class Chain {
   }
 
   translate(value) {
-    if (this.isNotEmpty()) {
-      return this.head.translate(value);
+    if (Validator.isPositiveNumber(value)) {
+      if (this.isNotEmpty()) {
+        return this.head.translate(value);
+      } else {
+        throw 'Chain is empty';
+      }
     } else {
-      throw "Chain is empty";
+      throw 'Invalid argument for "value". value should be a positive number';
     }
   }
 }

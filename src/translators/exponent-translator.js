@@ -1,18 +1,27 @@
 import {
-  DigitFormatter
+  Validator
 }
-from '../core/formatters/digit-formatter';
+from '../util/validator';
 
-export class FallbackTranslator {
+import {
+  NumberFormatter
+}
+from '../core/formatters/number-formatter';
+
+export class ExponentTranslator {
   translate(value) {
-    let translationStrategy;
-    let translatedValue = value.toString();
-    if (translatedValue.indexOf('e+') !== -1) {
-      translationStrategy = new HighExponentTranslationStrategy();
+    if (Validator.isPositiveNumber(value)) {
+      let translationStrategy;
+      let translatedValue = value.toString();
+      if (translatedValue.indexOf('e+') !== -1) {
+        translationStrategy = new HighExponentTranslationStrategy();
+      } else {
+        translationStrategy = new LowExponentTranslationStrategy();
+      }
+      return translationStrategy.translate(value);
     } else {
-      translationStrategy = new LowExponentTranslationStrategy();
+      throw 'Invalid argument for "value". value should be a positive number';
     }
-    return translationStrategy.translate(value);
   }
 }
 
