@@ -1,4 +1,9 @@
 import {
+  Locale
+}
+from '../../../../src/locale';
+
+import {
   TranslationResultFormatter
 }
 from '../../../../src/core/formatters/translation-result-formatter';
@@ -8,16 +13,14 @@ import {
 }
 from '../../../../src/core/types/translation-result';
 
-let valueArgError = 'Invalid argument for "translationResult"';
-
 describe('the TranslationResultFormatter class', () => {
   it('handles null value', () => {
-    expect(x => TranslationResultFormatter.format(null)).toThrow(valueArgError);
+    expect(x => TranslationResultFormatter.format(null)).toThrow(Locale.Error.InvalidArgTranslationResult);
   });
 
   it('handles undefined value', () => {
     let test = {};
-    expect(x => TranslationResultFormatter.format(test.undefined)).toThrow(valueArgError);
+    expect(x => TranslationResultFormatter.format(test.undefined)).toThrow(Locale.Error.InvalidArgTranslationResult);
   });
 
   it('formats TranslationResult with digit value', () => {

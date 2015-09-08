@@ -1,18 +1,21 @@
 import {
+  Locale
+}
+from '../../../../src/locale';
+
+import {
   NumberFormatter
 }
 from '../../../../src/core/formatters/number-formatter';
 
-let valueArgError = 'Invalid argument for "value"';
-
 describe('the NumberFormatter class', () => {
   it('handles null value', () => {
-    expect(x => NumberFormatter.format(null)).toThrow(valueArgError);
+    expect(x => NumberFormatter.format(null)).toThrow(Locale.Error.InvalidArgValue);
   });
 
   it('handles undefined value', () => {
     let test = {};
-    expect(x => NumberFormatter.format(test.undefined)).toThrow(valueArgError);
+    expect(x => NumberFormatter.format(test.undefined)).toThrow(Locale.Error.InvalidArgValue);
   });
 
   it('formats 100', () => {

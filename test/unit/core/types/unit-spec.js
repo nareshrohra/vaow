@@ -1,32 +1,34 @@
 import {
+  Locale
+}
+from '../../../../src/locale';
+
+import {
   Unit
 }
 from '../../../../src/core/types/unit';
 
-let invalidArgWordError = 'Invalid argument for "word"';
-let invalidArgValueError = 'Invalid argument for "value". value should be a positive number';
-
 describe('the Unit class', () => {
   it('handles null value for word', () => {
-    expect(x => new Unit(null, 1000)).toThrow(invalidArgWordError);
+    expect(x => new Unit(null, 1000)).toThrow(Locale.Error.InvalidArgWord);
   });
 
   it('handles undefined value for word', () => {
     let test = {};
-    expect(x => new Unit(test.notDefined, 1000)).toThrow(invalidArgWordError);
+    expect(x => new Unit(test.notDefined, 1000)).toThrow(Locale.Error.InvalidArgWord);
   });
 
   it('handles null for value', () => {
-    expect(x => new Unit('meter', null)).toThrow(invalidArgValueError);
+    expect(x => new Unit('meter', null)).toThrow(Locale.Error.InvalidArgPositiveNumberValue);
   });
 
   it('handles undefined for value', () => {
     let test = {};
-    expect(x => new Unit('meter', test.notDefined)).toThrow(invalidArgValueError);
+    expect(x => new Unit('meter', test.notDefined)).toThrow(Locale.Error.InvalidArgPositiveNumberValue);
   });
 
   it('handles negative for value', () => {
-    expect(x => new Unit('meter', -1000)).toThrow(invalidArgValueError);
+    expect(x => new Unit('meter', -1000)).toThrow(Locale.Error.InvalidArgPositiveNumberValue);
   });
 
   it('gets value', () => {

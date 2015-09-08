@@ -1,4 +1,9 @@
 import {
+  Locale
+}
+from '../../../../src/locale';
+
+import {
   TranslationResult,
   ElementTranslationResult,
   OverflowElementTranslationResult,
@@ -6,45 +11,38 @@ import {
 }
 from '../../../../src/core/types/translation-result';
 
-let invalidArgDigitValueNumberError = 'Invalid argument for "digitValue". value should be a number';
-
-let invalidArgDigitValueError = 'Invalid argument for "digitValue"';
-let invalidArgUnitError = 'Invalid argument for "unit"';
-let invalidArgMagnitudeError = 'Invalid argument for "magnitude"';
-let invalidArgWordError = 'Invalid argument for "word"';
-
 describe('the TranslationResult class', () => {
   it('handles null value for digitValue', () => {
     let translationResult = new TranslationResult();
-    expect(x => translationResult.setDigitValue(null)).toThrow(invalidArgDigitValueError);
+    expect(x => translationResult.setDigitValue(null)).toThrow(Locale.Error.InvalidArgDigitValue);
   });
 
   it('handles undefined value for digitValue', () => {
     let translationResult = new TranslationResult();
     let test = {};
-    expect(x => translationResult.setDigitValue(test.notDefined)).toThrow(invalidArgDigitValueError);
+    expect(x => translationResult.setDigitValue(test.notDefined)).toThrow(Locale.Error.InvalidArgDigitValue);
   });
 
   it('handles null value for unit', () => {
     let translationResult = new TranslationResult();
-    expect(x => translationResult.setUnit(null)).toThrow(invalidArgUnitError);
+    expect(x => translationResult.setUnit(null)).toThrow(Locale.Error.InvalidArgUnit);
   });
 
   it('handles undefined value for unit', () => {
     let translationResult = new TranslationResult();
     let test = {};
-    expect(x => translationResult.setUnit(test.notDefined)).toThrow(invalidArgUnitError);
+    expect(x => translationResult.setUnit(test.notDefined)).toThrow(Locale.Error.InvalidArgUnit);
   });
 
   it('handles null value for magnitude', () => {
     let translationResult = new TranslationResult();
-    expect(x => translationResult.increaseByMagnitude(null)).toThrow(invalidArgMagnitudeError);
+    expect(x => translationResult.increaseByMagnitude(null)).toThrow(Locale.Error.InvalidArgMagnitude);
   });
 
   it('handles undefined value for magnitude', () => {
     let translationResult = new TranslationResult();
     let test = {};
-    expect(x => translationResult.increaseByMagnitude(test.notDefined)).toThrow(invalidArgMagnitudeError);
+    expect(x => translationResult.increaseByMagnitude(test.notDefined)).toThrow(Locale.Error.InvalidArgMagnitude);
   });
 
   it('sets and gets digitValue', () => {
@@ -75,25 +73,25 @@ describe('the TranslationResult class', () => {
 
 describe('the ElementTranslationResult class', () => {
   it('handles null value for digitValue', () => {
-    expect(x => new ElementTranslationResult(null, 'unit')).toThrow(invalidArgDigitValueNumberError);
+    expect(x => new ElementTranslationResult(null, 'unit')).toThrow(Locale.Error.InvalidArgNumberDigitValue);
   });
 
   it('handles undefined value for digitValue', () => {
     let test = {};
-    expect(x => new ElementTranslationResult(test.notDefined, 'unit')).toThrow(invalidArgDigitValueNumberError);
+    expect(x => new ElementTranslationResult(test.notDefined, 'unit')).toThrow(Locale.Error.InvalidArgNumberDigitValue);
   });
 
   it('handles string for digitValue', () => {
-    expect(x => new ElementTranslationResult('a', 'unit')).toThrow(invalidArgDigitValueNumberError);
+    expect(x => new ElementTranslationResult('a', 'unit')).toThrow(Locale.Error.InvalidArgNumberDigitValue);
   });
 
   it('handles null for word', () => {
-    expect(x => new ElementTranslationResult(10, null)).toThrow(invalidArgWordError);
+    expect(x => new ElementTranslationResult(10, null)).toThrow(Locale.Error.InvalidArgWord);
   });
 
   it('handles undefined for word', () => {
     let test = {};
-    expect(x => new ElementTranslationResult(10, test.notDefined)).toThrow(invalidArgWordError);
+    expect(x => new ElementTranslationResult(10, test.notDefined)).toThrow(Locale.Error.InvalidArgWord);
   });
 
   it('gets word', () => {
@@ -131,25 +129,25 @@ describe('the ElementTranslationResult class', () => {
 
 describe('the OverflowElementTranslationResult class', () => {
   it('handles null value for digitValue', () => {
-    expect(x => new OverflowElementTranslationResult(null, 'unit')).toThrow(invalidArgDigitValueNumberError);
+    expect(x => new OverflowElementTranslationResult(null, 'unit')).toThrow(Locale.Error.InvalidArgNumberDigitValue);
   });
 
   it('handles undefined value for digitValue', () => {
     let test = {};
-    expect(x => new OverflowElementTranslationResult(test.notDefined, 'unit')).toThrow(invalidArgDigitValueNumberError);
+    expect(x => new OverflowElementTranslationResult(test.notDefined, 'unit')).toThrow(Locale.Error.InvalidArgNumberDigitValue);
   });
 
   it('handles string for digitValue', () => {
-    expect(x => new OverflowElementTranslationResult('a', 'unit')).toThrow(invalidArgDigitValueNumberError);
+    expect(x => new OverflowElementTranslationResult('a', 'unit')).toThrow(Locale.Error.InvalidArgNumberDigitValue);
   });
 
   it('handles null for word', () => {
-    expect(x => new OverflowElementTranslationResult(10, null)).toThrow(invalidArgWordError);
+    expect(x => new OverflowElementTranslationResult(10, null)).toThrow(Locale.Error.InvalidArgWord);
   });
 
   it('handles undefined for word', () => {
     let test = {};
-    expect(x => new OverflowElementTranslationResult(10, test.notDefined)).toThrow(invalidArgWordError);
+    expect(x => new OverflowElementTranslationResult(10, test.notDefined)).toThrow(Locale.Error.InvalidArgWord);
   });
 
   it('gets word', () => {
@@ -187,25 +185,25 @@ describe('the OverflowElementTranslationResult class', () => {
 
 describe('the UnderflowElementTranslationResult class', () => {
   it('handles null value for digitValue', () => {
-    expect(x => new UnderflowElementTranslationResult(null, 'unit')).toThrow(invalidArgDigitValueNumberError);
+    expect(x => new UnderflowElementTranslationResult(null, 'unit')).toThrow(Locale.Error.InvalidArgNumberDigitValue);
   });
 
   it('handles undefined value for digitValue', () => {
     let test = {};
-    expect(x => new UnderflowElementTranslationResult(test.notDefined, 'unit')).toThrow(invalidArgDigitValueNumberError);
+    expect(x => new UnderflowElementTranslationResult(test.notDefined, 'unit')).toThrow(Locale.Error.InvalidArgNumberDigitValue);
   });
 
   it('handles string for digitValue', () => {
-    expect(x => new UnderflowElementTranslationResult('a', 'unit')).toThrow(invalidArgDigitValueNumberError);
+    expect(x => new UnderflowElementTranslationResult('a', 'unit')).toThrow(Locale.Error.InvalidArgNumberDigitValue);
   });
 
   it('handles null for word', () => {
-    expect(x => new UnderflowElementTranslationResult(10, null)).toThrow(invalidArgWordError);
+    expect(x => new UnderflowElementTranslationResult(10, null)).toThrow(Locale.Error.InvalidArgWord);
   });
 
   it('handles undefined for word', () => {
     let test = {};
-    expect(x => new UnderflowElementTranslationResult(10, test.notDefined)).toThrow(invalidArgWordError);
+    expect(x => new UnderflowElementTranslationResult(10, test.notDefined)).toThrow(Locale.Error.InvalidArgWord);
   });
 
   it('gets word', () => {

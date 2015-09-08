@@ -3,6 +3,11 @@ import {
 }
 from '../../util/validator';
 
+import {
+  Locale
+}
+from '../../locale';
+
 export class Chain {
   constructor() {
     this.setChainStart(null);
@@ -32,7 +37,7 @@ export class Chain {
         this.setChainStart(chainElement);
       }
     } else {
-      throw 'Invalid argument for "chainElement"';
+      throw Locale.Error.InvalidArgChainElement;
     }
   }
 
@@ -46,10 +51,10 @@ export class Chain {
       if (this.isNotEmpty()) {
         return this.head.translate(value);
       } else {
-        throw 'Chain is empty';
+        throw Locale.Error.ChainEmpty;
       }
     } else {
-      throw 'Invalid argument for "value". value should be a positive number';
+      throw Locale.Error.InvalidArgPositiveNumberValue;
     }
   }
 }

@@ -1,4 +1,9 @@
 import {
+  Locale
+}
+from '../../../../src/locale';
+
+import {
   Chain
 }
 from '../../../../src/core/chain/chain';
@@ -18,44 +23,40 @@ let first = new TranslationChainElement(new Magnitude('Hundred', 100));
 let second = new TranslationChainElement(new Magnitude('Grand', 1000));
 let third = new TranslationChainElement(new Magnitude('MultiGrand', 10000));
 
-let chainIsEmptyError = 'Chain is empty';
-let invalidArgElementError = 'Invalid argument for "chainElement"';
-let invalidArgValueError = 'Invalid argument for "value". value should be a positive number';
-
 beforeEach(() => {
   chain = new Chain();
 });
 
 describe('the Chain class', () => {
   it('handles empty chain', () => {
-    expect(x => chain.translate(1000)).toThrow(chainIsEmptyError);
+    expect(x => chain.translate(1000)).toThrow(Locale.Error.ChainEmpty);
   });
 
   it('handles adding null chain element', () => {
-    expect(x => chain.addChainElement(null)).toThrow(invalidArgElementError);
+    expect(x => chain.addChainElement(null)).toThrow(Locale.Error.InvalidArgChainElement);
   });
 
   it('handles adding undefined chain element', () => {
     let test = {};
-    expect(x => chain.addChainElement(test.notDefined)).toThrow(invalidArgElementError);
+    expect(x => chain.addChainElement(test.notDefined)).toThrow(Locale.Error.InvalidArgChainElement);
   });
 
   it('handles translating null value', () => {
     let test = {};
-    expect(x => chain.translate(null)).toThrow(invalidArgValueError);
+    expect(x => chain.translate(null)).toThrow(Locale.Error.InvalidArgPositiveNumberValue);
   });
 
   it('handles translating undefined value', () => {
     let test = {};
-    expect(x => chain.translate(test.notDefined)).toThrow(invalidArgValueError);
+    expect(x => chain.translate(test.notDefined)).toThrow(Locale.Error.InvalidArgPositiveNumberValue);
   });
 
   it('handles translating string value', () => {
-    expect(x => chain.translate("a")).toThrow(invalidArgValueError);
+    expect(x => chain.translate("a")).toThrow(Locale.Error.InvalidArgPositiveNumberValue);
   });
 
   it('handles translating negative value', () => {
-    expect(x => chain.translate(-1)).toThrow(invalidArgValueError);
+    expect(x => chain.translate(-1)).toThrow(Locale.Error.InvalidArgPositiveNumberValue);
   });
 
   it('detects empty chain', () => {

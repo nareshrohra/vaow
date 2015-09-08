@@ -1,32 +1,34 @@
 import {
+  Locale
+}
+from '../../../../src/locale';
+
+import {
   Magnitude
 }
 from '../../../../src/core/types/magnitude';
 
-let invalidArgWordError = 'Invalid argument for "word"';
-let invalidArgValueError = 'Invalid argument for "value". value should be a positive number';
-
 describe('the Magnitude class', () => {
   it('handles null value for word', () => {
-    expect(x => new Magnitude(null, 1000)).toThrow(invalidArgWordError);
+    expect(x => new Magnitude(null, 1000)).toThrow(Locale.Error.InvalidArgWord);
   });
 
   it('handles undefined value for word', () => {
     let test = {};
-    expect(x => new Magnitude(test.notDefined, 1000)).toThrow(invalidArgWordError);
+    expect(x => new Magnitude(test.notDefined, 1000)).toThrow(Locale.Error.InvalidArgWord);
   });
 
   it('handles null for value', () => {
-    expect(x => new Magnitude('grand', null)).toThrow(invalidArgValueError);
+    expect(x => new Magnitude('grand', null)).toThrow(Locale.Error.InvalidArgPositiveNumberValue);
   });
 
   it('handles undefined for value', () => {
     let test = {};
-    expect(x => new Magnitude('grand', test.notDefined)).toThrow(invalidArgValueError);
+    expect(x => new Magnitude('grand', test.notDefined)).toThrow(Locale.Error.InvalidArgPositiveNumberValue);
   });
 
   it('handles negative for value', () => {
-    expect(x => new Magnitude('grand', -1000)).toThrow(invalidArgValueError);
+    expect(x => new Magnitude('grand', -1000)).toThrow(Locale.Error.InvalidArgPositiveNumberValue);
   });
 
   it('gets value', () => {

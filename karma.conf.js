@@ -15,9 +15,10 @@ module.exports = function(config) {
     jspm: {
       // Edit this to your needs
       loadFiles: [
+        'src/locale.js',
+        'src/util/**/*.js',
         'src/core/**/*.js',
         'src/translators/**/*.js',
-        'src/util/**/*.js',
         'test/unit/**/*.js'
       ],
       paths: {

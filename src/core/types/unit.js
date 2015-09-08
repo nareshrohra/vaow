@@ -3,6 +3,11 @@ import {
 }
 from '../../util/validator';
 
+import {
+  Locale
+}
+from '../../locale';
+
 export class Unit {
   constructor(word, value) {
     this.validate(word, value);
@@ -13,10 +18,10 @@ export class Unit {
 
   validate(word, value) {
     if (!Validator.isDefinedAndNotNull(word))
-      throw 'Invalid argument for "word"';
+      throw Locale.Error.InvalidArgWord;
 
     if (!Validator.isPositiveNumber(value))
-      throw 'Invalid argument for "value". value should be a positive number';
+      throw Locale.Error.InvalidArgPositiveNumberValue;
   }
 
   getWord() {

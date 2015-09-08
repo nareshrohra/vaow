@@ -1,12 +1,17 @@
 import {
-  NumberFormatter
+  Locale
 }
-from './number-formatter';
+from '../../locale';
 
 import {
   Validator
 }
 from '../../util/validator';
+
+import {
+  NumberFormatter
+}
+from './number-formatter';
 
 export class TranslationResultFormatter {
   static format(translationResult) {
@@ -19,7 +24,7 @@ export class TranslationResultFormatter {
         (magnitudes.length > 0 ? ' ' + magnitudes.reverse().join(' ') : '') +
         (unit ? ' ' + unit : '');
     } else {
-      throw 'Invalid argument for "translationResult"';
+      throw Locale.Error.InvalidArgTranslationResult;
     }
   }
 }

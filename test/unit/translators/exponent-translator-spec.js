@@ -1,4 +1,9 @@
 import {
+  Locale
+}
+from '../../../src/locale';
+
+import {
   ExponentTranslator
 }
 from '../../../src/translators/exponent-translator';
@@ -10,30 +15,27 @@ from '../../../src/core/constants/magnitude/magnitudes';
 
 let translator = null;
 
-
 beforeEach(() => {
   translator = new ExponentTranslator();
 });
 
-let invalidArgValueError = 'Invalid argument for "value". value should be a positive number';
-
 describe('the ExponentTranslator class', () => {
   it('handles null value', () => {
-    expect(x => translator.translate(null)).toThrow(invalidArgValueError);
+    expect(x => translator.translate(null)).toThrow(Locale.Error.InvalidArgPositiveNumberValue);
   });
 
   it('handles undefined value', () => {
     let test = {};
-    expect(x => translator.translate(test.notDefined)).toThrow(invalidArgValueError);
+    expect(x => translator.translate(test.notDefined)).toThrow(Locale.Error.InvalidArgPositiveNumberValue);
   });
 
   it('handles string value', () => {
-    expect(x => translator.translate("a")).toThrow(invalidArgValueError);
+    expect(x => translator.translate("a")).toThrow(Locale.Error.InvalidArgPositiveNumberValue);
   });
 
   it('handles negative value', () => {
     let value = -1;
-    expect(x => translator.translate(value)).toThrow(invalidArgValueError);
+    expect(x => translator.translate(value)).toThrow(Locale.Error.InvalidArgPositiveNumberValue);
   });
 
   it('translates 0', () => {

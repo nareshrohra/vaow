@@ -4,6 +4,11 @@ import {
 from '../../util/validator';
 
 import {
+  Locale
+}
+from '../../locale';
+
+import {
   UnderflowElementTranslationResult,
   OverflowElementTranslationResult,
   ElementTranslationResult
@@ -16,7 +21,7 @@ export class TranslationChainElement {
       this.translationBase = base;
       this.nextElement = null;
     } else {
-      throw 'Invalid argument for "base"';
+      throw Locale.Error.InvalidArgBase;
     }
   }
 
@@ -32,7 +37,7 @@ export class TranslationChainElement {
     if (Validator.isDefinedAndNotNull(nextElement)) {
       this.nextElement = nextElement;
     } else {
-      throw 'Invalid argument for "nextElement"';
+      throw Locale.Error.InvalidArgNextElement;
     }
   }
 

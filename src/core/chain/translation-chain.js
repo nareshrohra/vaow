@@ -4,6 +4,11 @@ import {
 from '../../util/validator';
 
 import {
+  Locale
+}
+from '../../locale';
+
+import {
   Chain
 }
 from './chain';
@@ -36,7 +41,7 @@ export class TranslationChain {
     if (Validator.isDefinedAndNotNull(unit)) {
       this.unitChain.addChainElement(new TranslationChainElement(unit));
     } else {
-      throw 'Invalid argument for unit';
+      throw Locale.Error.InvalidArgUnit;
     }
   }
 
@@ -44,7 +49,7 @@ export class TranslationChain {
     if (Validator.isDefinedAndNotNull(magnitude)) {
       this.magnitudeChain.addChainElement(new TranslationChainElement(magnitude));
     } else {
-      throw 'Invalid argument for magnitude';
+      throw Locale.Error.InvalidArgMagnitude;
     }
   }
 
@@ -63,10 +68,10 @@ export class TranslationChain {
         this.performTranslation();
         return this.finalResult.toString();
       } else {
-        throw 'Units and/or magnitudes are not added';
+        throw Locale.Error.UnitsMagnitudesNotAdded;
       }
     } else {
-      throw 'Invalid argument for "value". value should be a positive number';
+      throw Locale.Error.InvalidArgPositiveNumberValue;
     }
   }
 

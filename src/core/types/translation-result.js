@@ -1,12 +1,17 @@
 import {
-  TranslationResultFormatter
-}
-from '../formatters/translation-result-formatter';
-
-import {
   Validator
 }
 from '../../util/validator';
+
+import {
+  Locale
+}
+from '../../locale';
+
+import {
+  TranslationResultFormatter
+}
+from '../formatters/translation-result-formatter';
 
 export class TranslationResult {
   constructor() {
@@ -19,7 +24,7 @@ export class TranslationResult {
     if (Validator.isDefinedAndNotNull(digitValue)) {
       this.digitValue = digitValue;
     } else {
-      throw 'Invalid argument for "digitValue"';
+      throw Locale.Error.InvalidArgDigitValue;
     }
   }
 
@@ -27,7 +32,7 @@ export class TranslationResult {
     if (Validator.isDefinedAndNotNull(unit)) {
       this.unit = unit;
     } else {
-      throw 'Invalid argument for "unit"'
+      throw Locale.Error.InvalidArgUnit;
     }
   }
 
@@ -35,7 +40,7 @@ export class TranslationResult {
     if (Validator.isDefinedAndNotNull(magnitude)) {
       this.magnitudes.push(magnitude);
     } else {
-      throw 'Invalid argument for "magnitude"';
+      throw Locale.Error.InvalidArgMagnitude;
     }
   }
 
@@ -68,11 +73,11 @@ export class ElementTranslationResult {
 
   validate(digitValue, word) {
     if (!Validator.isNumber(digitValue)) {
-      throw 'Invalid argument for "digitValue". value should be a number';
+      throw Locale.Error.InvalidArgNumberDigitValue;
     }
 
     if (!Validator.isDefinedAndNotNull(word)) {
-      throw 'Invalid argument for "word"';
+      throw Locale.Error.InvalidArgWord;
     }
   }
 

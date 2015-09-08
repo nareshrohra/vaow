@@ -1,3 +1,7 @@
+import {
+  Locale
+}
+from '../../../../src/locale';
 
 import {
   TranslationChain
@@ -20,8 +24,6 @@ import {
 from '../../../../src/core/constants/magnitude/magnitudes';
 
 let translationChain = null;
-let invalidArgMagnitudeError = 'Invalid argument for magnitude';
-let invalidArgUnitError = 'Invalid argument for unit';
 
 beforeEach(() => {
   translationChain = new TranslationChain();
@@ -29,21 +31,21 @@ beforeEach(() => {
 
 describe('the TranslationChain class', () => {
   it('handles null value for adding magnitude', () => {
-    expect(x => translationChain.addMagnitude(null)).toThrow(invalidArgMagnitudeError);
-  });
+    expect(x => translationChain.addMagnitude(null)).toThrow(Locale.Error.InvalidArgMagnitude);
+  });Locale.Error.InvalidArgUnit
 
   it('handles undefined value for adding magnitude', () => {
     let test = {};
-    expect(x => translationChain.addMagnitude(test.notDefined)).toThrow(invalidArgMagnitudeError);
+    expect(x => translationChain.addMagnitude(test.notDefined)).toThrow(Locale.Error.InvalidArgMagnitude);
   });
 
   it('handles null value for adding unit', () => {
-    expect(x => translationChain.addUnit(null)).toThrow(invalidArgUnitError);
+    expect(x => translationChain.addUnit(null)).toThrow(Locale.Error.InvalidArgUnit);
   });
 
   it('handles undefined value for adding unit', () => {
     let test = {};
-    expect(x => translationChain.addUnit(test.notDefined)).toThrow(invalidArgUnitError);
+    expect(x => translationChain.addUnit(test.notDefined)).toThrow(Locale.Error.InvalidArgUnit);
   });
 
   it('translates 0', () => {

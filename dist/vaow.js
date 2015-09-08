@@ -48,7 +48,7 @@
 	  //TODO: Fix this hack
 	  'use strict';
 
-	  !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1), __webpack_require__(3), __webpack_require__(9), __webpack_require__(4), __webpack_require__(10), __webpack_require__(14)], __WEBPACK_AMD_DEFINE_RESULT__ = function (chain, translationChain, circularTranslationChain, translationChainElement, numberTranslator, timeTranslator) {
+	  !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1), __webpack_require__(4), __webpack_require__(10), __webpack_require__(5), __webpack_require__(11), __webpack_require__(15)], __WEBPACK_AMD_DEFINE_RESULT__ = function (chain, translationChain, circularTranslationChain, translationChainElement, numberTranslator, timeTranslator) {
 	    window.vaow = {
 	      Chain: chain.Chain,
 	      TranslationChain: translationChain.TranslationChain,
@@ -65,7 +65,7 @@
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(2)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _utilValidator) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(2), __webpack_require__(3)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _utilValidator, _locale) {
 	  'use strict';
 
 	  Object.defineProperty(exports, '__esModule', {
@@ -113,7 +113,7 @@
 	            this.setChainStart(chainElement);
 	          }
 	        } else {
-	          throw 'Invalid argument for "chainElement"';
+	          throw _locale.Locale.Error.InvalidArgChainElement;
 	        }
 	      }
 	    }, {
@@ -129,10 +129,10 @@
 	          if (this.isNotEmpty()) {
 	            return this.head.translate(value);
 	          } else {
-	            throw 'Chain is empty';
+	            throw _locale.Locale.Error.ChainEmpty;
 	          }
 	        } else {
-	          throw 'Invalid argument for "value". value should be a positive number';
+	          throw _locale.Locale.Error.InvalidArgPositiveNumberValue;
 	        }
 	      }
 	    }]);
@@ -192,7 +192,70 @@
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(2), __webpack_require__(1), __webpack_require__(4), __webpack_require__(8), __webpack_require__(5)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _utilValidator, _chain, _translationChainElement, _translatorsExponentTranslator, _typesTranslationResult) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports) {
+	  'use strict';
+
+	  Object.defineProperty(exports, '__esModule', {
+	    value: true
+	  });
+
+	  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	  var Locale = function Locale() {
+	    _classCallCheck(this, Locale);
+	  };
+
+	  exports.Locale = Locale;
+
+	  Locale.Error = {};
+	  Locale.Error.InvalidArgPositiveNumberValue = Locale.Error.InvalidArgPositiveNumberValue;
+	  Locale.Error.InvalidArgValue = 'Invalid argument for "value"';
+	  Locale.Error.InvalidArgChainElement = 'Invalid argument for "chainElement"';
+	  Locale.Error.InvalidArgBase = 'Invalid argument for "base"';
+	  Locale.Error.InvalidArgNextElement = 'Invalid argument for "nextElement"';
+	  Locale.Error.InvalidArgDigitValue = 'Invalid argument for "digitValue"';
+	  Locale.Error.InvalidArgNumberDigitValue = 'Invalid argument for "digitValue". value should be a number';
+	  Locale.Error.InvalidArgUnit = 'Invalid argument for "unit"';
+	  Locale.Error.InvalidArgMagnitude = 'Invalid argument for "magnitude"';
+	  Locale.Error.InvalidArgTranslationResult = 'Invalid argument for "translationResult"';
+	  Locale.Error.InvalidArgWord = 'Invalid argument for "unit"';
+
+	  Locale.Error.ChainEmpty = 'Chain is empty';
+	  Locale.Error.UnitsMagnitudesNotAdded = 'Units and/or magnitudes are not added';
+
+	  Locale.PositiveExponent = 'e+';
+	  Locale.ExponentDisplay = ' x 10^';
+
+	  Locale.Magnitude = {};
+	  Locale.Magnitude.Million = 'million';
+	  Locale.Magnitude.Billion = 'billion';
+	  Locale.Magnitude.Trillion = 'trillion';
+	  Locale.Magnitude.Quadrillion = 'quadrillion';
+	  Locale.Magnitude.Quintillion = 'quintillion';
+	  Locale.Magnitude.Sextillion = 'sextillion';
+	  Locale.Magnitude.Septillion = 'septillion';
+	  Locale.Magnitude.Octillion = 'octillion';
+	  Locale.Magnitude.Nonillion = 'nonillion';
+	  Locale.Magnitude.Decillion = 'decillion';
+	  Locale.Magnitude.Undecillion = 'undecillion';
+
+	  Locale.Time = {};
+	  Locale.Time.Seconds = 'seconds';
+	  Locale.Time.Minutes = 'minutes';
+	  Locale.Time.Hours = 'hours';
+	  Locale.Time.Days = 'days';
+	  Locale.Time.Months = 'months';
+	  Locale.Time.Years = 'years';
+	  Locale.Time.Decades = 'decades';
+	  Locale.Time.Centuries = 'centuries';
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	//# sourceMappingURL=locale.js.map
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(2), __webpack_require__(3), __webpack_require__(1), __webpack_require__(5), __webpack_require__(9), __webpack_require__(6)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _utilValidator, _locale, _chain, _translationChainElement, _translatorsExponentTranslator, _typesTranslationResult) {
 	  'use strict';
 
 	  Object.defineProperty(exports, '__esModule', {
@@ -220,7 +283,7 @@
 	        if (_utilValidator.Validator.isDefinedAndNotNull(unit)) {
 	          this.unitChain.addChainElement(new _translationChainElement.TranslationChainElement(unit));
 	        } else {
-	          throw 'Invalid argument for unit';
+	          throw _locale.Locale.Error.InvalidArgUnit;
 	        }
 	      }
 	    }, {
@@ -229,7 +292,7 @@
 	        if (_utilValidator.Validator.isDefinedAndNotNull(magnitude)) {
 	          this.magnitudeChain.addChainElement(new _translationChainElement.TranslationChainElement(magnitude));
 	        } else {
-	          throw 'Invalid argument for magnitude';
+	          throw _locale.Locale.Error.InvalidArgMagnitude;
 	        }
 	      }
 	    }, {
@@ -251,10 +314,10 @@
 	            this.performTranslation();
 	            return this.finalResult.toString();
 	          } else {
-	            throw 'Units and/or magnitudes are not added';
+	            throw _locale.Locale.Error.UnitsMagnitudesNotAdded;
 	          }
 	        } else {
-	          throw 'Invalid argument for "value". value should be a positive number';
+	          throw _locale.Locale.Error.InvalidArgPositiveNumberValue;
 	        }
 	      }
 	    }, {
@@ -319,10 +382,10 @@
 	//# sourceMappingURL=../../core/chain/translation-chain.js.map
 
 /***/ },
-/* 4 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(2), __webpack_require__(5)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _utilValidator, _typesTranslationResult) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(2), __webpack_require__(3), __webpack_require__(6)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _utilValidator, _locale, _typesTranslationResult) {
 	  'use strict';
 
 	  Object.defineProperty(exports, '__esModule', {
@@ -341,7 +404,7 @@
 	        this.translationBase = base;
 	        this.nextElement = null;
 	      } else {
-	        throw 'Invalid argument for "base"';
+	        throw _locale.Locale.Error.InvalidArgBase;
 	      }
 	    }
 
@@ -361,7 +424,7 @@
 	        if (_utilValidator.Validator.isDefinedAndNotNull(nextElement)) {
 	          this.nextElement = nextElement;
 	        } else {
-	          throw 'Invalid argument for "nextElement"';
+	          throw _locale.Locale.Error.InvalidArgNextElement;
 	        }
 	      }
 	    }, {
@@ -396,10 +459,10 @@
 	//# sourceMappingURL=../../core/chain/translation-chain-element.js.map
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(6), __webpack_require__(2)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _formattersTranslationResultFormatter, _utilValidator) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(2), __webpack_require__(3), __webpack_require__(7)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _utilValidator, _locale, _formattersTranslationResultFormatter) {
 	  'use strict';
 
 	  Object.defineProperty(exports, '__esModule', {
@@ -429,7 +492,7 @@
 	        if (_utilValidator.Validator.isDefinedAndNotNull(digitValue)) {
 	          this.digitValue = digitValue;
 	        } else {
-	          throw 'Invalid argument for "digitValue"';
+	          throw _locale.Locale.Error.InvalidArgDigitValue;
 	        }
 	      }
 	    }, {
@@ -438,7 +501,7 @@
 	        if (_utilValidator.Validator.isDefinedAndNotNull(unit)) {
 	          this.unit = unit;
 	        } else {
-	          throw 'Invalid argument for "unit"';
+	          throw _locale.Locale.Error.InvalidArgUnit;
 	        }
 	      }
 	    }, {
@@ -447,7 +510,7 @@
 	        if (_utilValidator.Validator.isDefinedAndNotNull(magnitude)) {
 	          this.magnitudes.push(magnitude);
 	        } else {
-	          throw 'Invalid argument for "magnitude"';
+	          throw _locale.Locale.Error.InvalidArgMagnitude;
 	        }
 	      }
 	    }, {
@@ -493,11 +556,11 @@
 	      key: 'validate',
 	      value: function validate(digitValue, word) {
 	        if (!_utilValidator.Validator.isNumber(digitValue)) {
-	          throw 'Invalid argument for "digitValue". value should be a number';
+	          throw _locale.Locale.Error.InvalidArgNumberDigitValue;
 	        }
 
 	        if (!_utilValidator.Validator.isDefinedAndNotNull(word)) {
-	          throw 'Invalid argument for "word"';
+	          throw _locale.Locale.Error.InvalidArgWord;
 	        }
 	      }
 	    }, {
@@ -570,10 +633,10 @@
 	//# sourceMappingURL=../../core/types/translation-result.js.map
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(7), __webpack_require__(2)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _numberFormatter, _utilValidator) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(3), __webpack_require__(2), __webpack_require__(8)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _locale, _utilValidator, _numberFormatter) {
 	  'use strict';
 
 	  Object.defineProperty(exports, '__esModule', {
@@ -599,7 +662,7 @@
 
 	          return _numberFormatter.NumberFormatter.format(digitValue) + (magnitudes.length > 0 ? ' ' + magnitudes.reverse().join(' ') : '') + (unit ? ' ' + unit : '');
 	        } else {
-	          throw 'Invalid argument for "translationResult"';
+	          throw _locale.Locale.Error.InvalidArgTranslationResult;
 	        }
 	      }
 	    }]);
@@ -612,10 +675,10 @@
 	//# sourceMappingURL=../../core/formatters/translation-result-formatter.js.map
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(2)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _utilValidator) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(2), __webpack_require__(3)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _utilValidator, _locale) {
 	  'use strict';
 
 	  Object.defineProperty(exports, '__esModule', {
@@ -637,7 +700,7 @@
 	        if (_utilValidator.Validator.isDefinedAndNotNull(value)) {
 	          return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	        } else {
-	          throw 'Invalid argument for "value"';
+	          throw _locale.Locale.Error.InvalidArgValue;
 	        }
 	      }
 	    }]);
@@ -650,10 +713,10 @@
 	//# sourceMappingURL=../../core/formatters/number-formatter.js.map
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(2), __webpack_require__(7)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _utilValidator, _coreFormattersNumberFormatter) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(2), __webpack_require__(3), __webpack_require__(8)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _utilValidator, _locale, _coreFormattersNumberFormatter) {
 	  'use strict';
 
 	  Object.defineProperty(exports, '__esModule', {
@@ -675,14 +738,14 @@
 	        if (_utilValidator.Validator.isPositiveNumber(value)) {
 	          var translationStrategy = undefined;
 	          var translatedValue = value.toString();
-	          if (translatedValue.indexOf('e+') !== -1) {
+	          if (translatedValue.indexOf(_locale.Locale.PositiveExponent) !== -1) {
 	            translationStrategy = new HighExponentTranslationStrategy();
 	          } else {
 	            translationStrategy = new LowExponentTranslationStrategy();
 	          }
 	          return translationStrategy.translate(value);
 	        } else {
-	          throw 'Invalid argument for "value". value should be a positive number';
+	          throw _locale.Locale.Error.InvalidArgPositiveNumberValue;
 	        }
 	      }
 	    }]);
@@ -704,7 +767,7 @@
 	        var factorExponent = translatedValue.length - 1;
 	        if (factorExponent > 2) {
 	          var factor = Math.pow(10, factorExponent);
-	          return Math.round(value / factor).toString() + ' x 10^' + factorExponent.toString();
+	          return Math.round(value / factor).toString() + _locale.Locale.ExponentDisplay + factorExponent.toString();
 	        } else {
 	          return translatedValue;
 	        }
@@ -723,10 +786,10 @@
 	      key: 'translate',
 	      value: function translate(value) {
 	        var translatedValue = value.toString();
-	        var exponentIndex = translatedValue.indexOf('e+');
+	        var exponentIndex = translatedValue.indexOf(_locale.Locale.PositiveExponent);
 	        var exponent = translatedValue.substring(exponentIndex);
 	        var mantissa = translatedValue.substring(0, exponentIndex);
-	        return Math.round(parseInt(mantissa)).toString() + exponent.replace('e+', ' x 10^');
+	        return Math.round(parseInt(mantissa)).toString() + exponent.replace(_locale.Locale.PositiveExponent, _locale.Locale.ExponentDisplay);
 	      }
 	    }]);
 
@@ -736,10 +799,10 @@
 	//# sourceMappingURL=../translators/exponent-translator.js.map
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(3)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _translationChain) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(4)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _translationChain) {
 	  'use strict';
 
 	  Object.defineProperty(exports, '__esModule', {
@@ -789,10 +852,10 @@
 	//# sourceMappingURL=../../core/chain/circular-translation-chain.js.map
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(11), __webpack_require__(9)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _translatorHelper, _coreChainCircularTranslationChain) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(12), __webpack_require__(10)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _translatorHelper, _coreChainCircularTranslationChain) {
 	  'use strict';
 
 	  Object.defineProperty(exports, '__esModule', {
@@ -841,10 +904,10 @@
 	//# sourceMappingURL=../translators/number-translator.js.map
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(12)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _coreConstantsMagnitudeMagnitudes) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(13)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _coreConstantsMagnitudeMagnitudes) {
 	  'use strict';
 
 	  Object.defineProperty(exports, '__esModule', {
@@ -885,10 +948,10 @@
 	//# sourceMappingURL=../translators/translator-helper.js.map
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(13)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _typesMagnitude) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(3), __webpack_require__(14)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _locale, _typesMagnitude) {
 	  'use strict';
 
 	  Object.defineProperty(exports, '__esModule', {
@@ -904,25 +967,25 @@
 	  exports.Magnitudes = Magnitudes;
 
 	  Magnitudes.Unit = new _typesMagnitude.Magnitude('', 0);
-	  Magnitudes.Million = new _typesMagnitude.Magnitude('million', Math.pow(10, 6));
-	  Magnitudes.Billion = new _typesMagnitude.Magnitude('billion', Math.pow(10, 9));
-	  Magnitudes.Trillion = new _typesMagnitude.Magnitude('trillion', Math.pow(10, 12));
-	  Magnitudes.Quadrillion = new _typesMagnitude.Magnitude('quadrillion', Math.pow(10, 15));
-	  Magnitudes.Quintillion = new _typesMagnitude.Magnitude('quintillion', Math.pow(10, 18));
-	  Magnitudes.Sextillion = new _typesMagnitude.Magnitude('sextillion', Math.pow(10, 21));
-	  Magnitudes.Septillion = new _typesMagnitude.Magnitude('septillion', Math.pow(10, 24));
-	  Magnitudes.Octillion = new _typesMagnitude.Magnitude('octillion', Math.pow(10, 27));
-	  Magnitudes.Nonillion = new _typesMagnitude.Magnitude('nonillion', Math.pow(10, 30));
-	  Magnitudes.Decillion = new _typesMagnitude.Magnitude('decillion', Math.pow(10, 33));
-	  Magnitudes.Undecillion = new _typesMagnitude.Magnitude('undecillion', Math.pow(10, 36));
+	  Magnitudes.Million = new _typesMagnitude.Magnitude(_locale.Locale.Magnitude.Million, Math.pow(10, 6));
+	  Magnitudes.Billion = new _typesMagnitude.Magnitude(_locale.Locale.Magnitude.Billion, Math.pow(10, 9));
+	  Magnitudes.Trillion = new _typesMagnitude.Magnitude(_locale.Locale.Magnitude.Trillion, Math.pow(10, 12));
+	  Magnitudes.Quadrillion = new _typesMagnitude.Magnitude(_locale.Locale.Magnitude.Quadrillion, Math.pow(10, 15));
+	  Magnitudes.Quintillion = new _typesMagnitude.Magnitude(_locale.Locale.Magnitude.Quintillion, Math.pow(10, 18));
+	  Magnitudes.Sextillion = new _typesMagnitude.Magnitude(_locale.Locale.Magnitude.Sextillion, Math.pow(10, 21));
+	  Magnitudes.Septillion = new _typesMagnitude.Magnitude(_locale.Locale.Magnitude.Septillion, Math.pow(10, 24));
+	  Magnitudes.Octillion = new _typesMagnitude.Magnitude(_locale.Locale.Magnitude.Octillion, Math.pow(10, 27));
+	  Magnitudes.Nonillion = new _typesMagnitude.Magnitude(_locale.Locale.Magnitude.Nonillion, Math.pow(10, 30));
+	  Magnitudes.Decillion = new _typesMagnitude.Magnitude(_locale.Locale.Magnitude.Decillion, Math.pow(10, 33));
+	  Magnitudes.Undecillion = new _typesMagnitude.Magnitude(_locale.Locale.Magnitude.Undecillion, Math.pow(10, 36));
 	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	//# sourceMappingURL=../../../core/constants/magnitude/magnitudes.js.map
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(2)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _utilValidator) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(2), __webpack_require__(3)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _utilValidator, _locale) {
 	  'use strict';
 
 	  Object.defineProperty(exports, '__esModule', {
@@ -946,9 +1009,9 @@
 	    _createClass(Magnitude, [{
 	      key: 'validate',
 	      value: function validate(word, value) {
-	        if (!_utilValidator.Validator.isDefinedAndNotNull(word)) throw 'Invalid argument for "word"';
+	        if (!_utilValidator.Validator.isDefinedAndNotNull(word)) throw _locale.Locale.Error.InvalidArgWord;
 
-	        if (!_utilValidator.Validator.isPositiveNumber(value)) throw 'Invalid argument for "value". value should be a positive number';
+	        if (!_utilValidator.Validator.isPositiveNumber(value)) throw _locale.Locale.Error.InvalidArgPositiveNumberValue;
 	      }
 	    }, {
 	      key: 'getWord',
@@ -970,10 +1033,10 @@
 	//# sourceMappingURL=../../core/types/magnitude.js.map
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(11), __webpack_require__(9), __webpack_require__(15)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _translatorHelper, _coreChainCircularTranslationChain, _coreConstantsTimeUnits) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(12), __webpack_require__(10), __webpack_require__(16)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _translatorHelper, _coreChainCircularTranslationChain, _coreConstantsTimeUnits) {
 	  'use strict';
 
 	  Object.defineProperty(exports, '__esModule', {
@@ -1035,10 +1098,10 @@
 	//# sourceMappingURL=../translators/time-translator.js.map
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(16)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _typesUnit) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(3), __webpack_require__(17)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _locale, _typesUnit) {
 	  'use strict';
 
 	  Object.defineProperty(exports, '__esModule', {
@@ -1053,22 +1116,22 @@
 
 	  exports.Time = Time;
 
-	  Time.Second = new _typesUnit.Unit('seconds', 0);
-	  Time.Minute = new _typesUnit.Unit('minutes', 60);
-	  Time.Hour = new _typesUnit.Unit('hours', Time.Minute.getValue() * 60);
-	  Time.Day = new _typesUnit.Unit('days', Time.Hour.getValue() * 24);
-	  Time.Month = new _typesUnit.Unit('months', Time.Day.getValue() * 30.43);
-	  Time.Year = new _typesUnit.Unit('years', Time.Day.getValue() * 365.24);
-	  Time.Decade = new _typesUnit.Unit('decades', Time.Year.getValue() * 10);
-	  Time.Century = new _typesUnit.Unit('centuries', Time.Year.getValue() * 100);
+	  Time.Second = new _typesUnit.Unit(_locale.Locale.Time.Seconds, 0);
+	  Time.Minute = new _typesUnit.Unit(_locale.Locale.Time.Minutes, 60);
+	  Time.Hour = new _typesUnit.Unit(_locale.Locale.Time.Hours, Time.Minute.getValue() * 60);
+	  Time.Day = new _typesUnit.Unit(_locale.Locale.Time.Days, Time.Hour.getValue() * 24);
+	  Time.Month = new _typesUnit.Unit(_locale.Locale.Time.Months, Time.Day.getValue() * 30.43);
+	  Time.Year = new _typesUnit.Unit(_locale.Locale.Time.Years, Time.Day.getValue() * 365.24);
+	  Time.Decade = new _typesUnit.Unit(_locale.Locale.Time.Decades, Time.Year.getValue() * 10);
+	  Time.Century = new _typesUnit.Unit(_locale.Locale.Time.Centuries, Time.Year.getValue() * 100);
 	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	//# sourceMappingURL=../../../core/constants/time/units.js.map
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(2)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _utilValidator) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(2), __webpack_require__(3)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _utilValidator, _locale) {
 	  'use strict';
 
 	  Object.defineProperty(exports, '__esModule', {
@@ -1092,9 +1155,9 @@
 	    _createClass(Unit, [{
 	      key: 'validate',
 	      value: function validate(word, value) {
-	        if (!_utilValidator.Validator.isDefinedAndNotNull(word)) throw 'Invalid argument for "word"';
+	        if (!_utilValidator.Validator.isDefinedAndNotNull(word)) throw _locale.Locale.Error.InvalidArgWord;
 
-	        if (!_utilValidator.Validator.isPositiveNumber(value)) throw 'Invalid argument for "value". value should be a positive number';
+	        if (!_utilValidator.Validator.isPositiveNumber(value)) throw _locale.Locale.Error.InvalidArgPositiveNumberValue;
 	      }
 	    }, {
 	      key: 'getWord',
