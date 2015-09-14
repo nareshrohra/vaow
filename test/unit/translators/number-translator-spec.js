@@ -103,4 +103,9 @@ describe('the NumberTranslator class', () => {
     let value = Magnitudes.Undecillion.getValue();
     expect(translator.translate(value)).toBe('1 undecillion');
   });
+
+  it('translates with rounding: 1.2 billion', () => {
+    let value = 1.25 * Magnitudes.Billion.getValue();
+    expect(translator.translate(value)).toBe('1.25 billion');
+  });
 });

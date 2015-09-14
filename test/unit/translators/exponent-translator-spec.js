@@ -52,4 +52,9 @@ describe('the ExponentTranslator class', () => {
     let value = Math.pow(10, 6);
     expect(translator.translate(value)).toBe('1 x 10^6');
   });
+
+  it('translates 10.214^6', () => {
+    let value = 1.214 * Math.pow(10, 6);
+    expect(translator.translate(value)).toBe('1.21 x 10^6');
+  });
 });

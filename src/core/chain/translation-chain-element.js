@@ -58,6 +58,6 @@ export class TranslationChainElement {
   factorWithCurrentBase(value) {
     let conversionFactor = this.getValue();
     conversionFactor = conversionFactor > 0 ? conversionFactor : 1;
-    return Math.round(value / conversionFactor);
+    return value / conversionFactor;
   }
 }

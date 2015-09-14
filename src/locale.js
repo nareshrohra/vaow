@@ -3,7 +3,9 @@ export class Locale {
 }
 
 Locale.Error = {};
-Locale.Error.InvalidArgPositiveNumberValue = Locale.Error.InvalidArgPositiveNumberValue;
+Locale.Error.InvalidArgPositiveNumberValue = 'Invalid argument "value". value should be a positive number';
+Locale.Error.InvalidArgPositiveDecimalPoints = 'Invalid argument "decimalPoints". decimalPoints should be a positive number';
+Locale.Error.InvalidArgNumber = 'Invalid argument for "number"';
 Locale.Error.InvalidArgValue = 'Invalid argument for "value"';
 Locale.Error.InvalidArgChainElement = 'Invalid argument for "chainElement"';
 Locale.Error.InvalidArgBase = 'Invalid argument for "base"';

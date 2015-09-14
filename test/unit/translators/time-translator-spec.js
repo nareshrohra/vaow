@@ -94,4 +94,9 @@ describe('the TimeTranslator class', () => {
     let value = 100 * Magnitudes.Million.getValue() * Time.Century.getValue();
     expect(translator.translate(value)).toBe('100 million centuries');
   });
+
+  it('translates with rounding: 1.15 million centuries', () => {
+    let value = 1.15 * Magnitudes.Million.getValue() * Time.Century.getValue();
+    expect(translator.translate(value)).toBe('1.15 million centuries');
+  });
 });

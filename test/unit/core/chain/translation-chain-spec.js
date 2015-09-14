@@ -112,4 +112,11 @@ describe('the TranslationChain class', () => {
     let value = Magnitudes.Billion.getValue();
     expect(translationChain.translate(value)).toBe("1,000 million");
   });
+
+  it('translates with rounding', () => {
+    translationChain.addMagnitude(Magnitudes.Million);
+
+    let value = 1.256 * Magnitudes.Million.getValue();
+    expect(translationChain.translate(value)).toBe("1.26 million");
+  });
 });

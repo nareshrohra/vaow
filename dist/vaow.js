@@ -47,7 +47,7 @@
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports) {
 	  'use strict';
 
-	  !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(5), __webpack_require__(15), __webpack_require__(9), __webpack_require__(8), __webpack_require__(7), __webpack_require__(10), __webpack_require__(1), __webpack_require__(16), __webpack_require__(14), __webpack_require__(13)], __WEBPACK_AMD_DEFINE_RESULT__ = function (magnitude, unit, chain, translationChain, circularTranslationChain, translationChainElement, numberTranslator, timeTranslator, exponentTranslator, numberFormatter) {
+	  !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(5), __webpack_require__(16), __webpack_require__(9), __webpack_require__(8), __webpack_require__(7), __webpack_require__(10), __webpack_require__(1), __webpack_require__(17), __webpack_require__(15), __webpack_require__(13)], __WEBPACK_AMD_DEFINE_RESULT__ = function (magnitude, unit, chain, translationChain, circularTranslationChain, translationChainElement, numberTranslator, timeTranslator, exponentTranslator, numberFormatter) {
 	    window.vaow = {
 	      Magnitude: magnitude.Magnitude,
 	      Unit: unit.Unit,
@@ -213,7 +213,9 @@
 	  exports.Locale = Locale;
 
 	  Locale.Error = {};
-	  Locale.Error.InvalidArgPositiveNumberValue = Locale.Error.InvalidArgPositiveNumberValue;
+	  Locale.Error.InvalidArgPositiveNumberValue = 'Invalid argument "value". value should be a positive number';
+	  Locale.Error.InvalidArgPositiveDecimalPoints = 'Invalid argument "decimalPoints". decimalPoints should be a positive number';
+	  Locale.Error.InvalidArgNumber = 'Invalid argument for "number"';
 	  Locale.Error.InvalidArgValue = 'Invalid argument for "value"';
 	  Locale.Error.InvalidArgChainElement = 'Invalid argument for "chainElement"';
 	  Locale.Error.InvalidArgBase = 'Invalid argument for "base"';
@@ -408,7 +410,7 @@
 /* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(6), __webpack_require__(4), __webpack_require__(9), __webpack_require__(10), __webpack_require__(14), __webpack_require__(11)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _utilValidator, _locale, _chain, _translationChainElement, _translatorsExponentTranslator, _typesTranslationResult) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(6), __webpack_require__(4), __webpack_require__(9), __webpack_require__(10), __webpack_require__(15), __webpack_require__(11)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _utilValidator, _locale, _chain, _translationChainElement, _translatorsExponentTranslator, _typesTranslationResult) {
 	  'use strict';
 
 	  Object.defineProperty(exports, '__esModule', {
@@ -683,7 +685,7 @@
 	      value: function factorWithCurrentBase(value) {
 	        var conversionFactor = this.getValue();
 	        conversionFactor = conversionFactor > 0 ? conversionFactor : 1;
-	        return Math.round(value / conversionFactor);
+	        return value / conversionFactor;
 	      }
 	    }]);
 
@@ -914,7 +916,7 @@
 /* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(6), __webpack_require__(4)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _utilValidator, _locale) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(6), __webpack_require__(4), __webpack_require__(14)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _utilValidator, _locale, _utilMathExtension) {
 	  'use strict';
 
 	  Object.defineProperty(exports, '__esModule', {
@@ -934,7 +936,11 @@
 	      key: 'format',
 	      value: function format(value) {
 	        if (_utilValidator.Validator.isDefinedAndNotNull(value)) {
-	          return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	          if (_utilValidator.Validator.isNumber(value)) {
+	            return _utilMathExtension.MathExtension.round(value, 2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	          } else {
+	            return value;
+	          }
 	        } else {
 	          throw _locale.Locale.Error.InvalidArgValue;
 	        }
@@ -952,7 +958,75 @@
 /* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(6), __webpack_require__(4), __webpack_require__(13)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _utilValidator, _locale, _coreFormattersNumberFormatter) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(6), __webpack_require__(4)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _validator, _locale) {
+	  'use strict';
+
+	  Object.defineProperty(exports, '__esModule', {
+	    value: true
+	  });
+
+	  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	  var MathExtension = (function () {
+	    function MathExtension() {
+	      _classCallCheck(this, MathExtension);
+	    }
+
+	    _createClass(MathExtension, null, [{
+	      key: 'round',
+	      value: function round(number, decimalPoints) {
+	        decimalPoints = decimalPoints || 0;
+
+	        if (!_validator.Validator.isNumber(number)) {
+	          throw _locale.Locale.Error.InvalidArgNumber;
+	        }
+
+	        if (!_validator.Validator.isPositiveNumber(decimalPoints)) {
+	          throw _locale.Locale.Error.InvalidArgPositiveDecimalPoints;
+	        }
+	        return MathExtension._decimalAdjust('round', number, decimalPoints * -1);
+	      }
+
+	      //referenced from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/round
+	    }, {
+	      key: '_decimalAdjust',
+	      value: function _decimalAdjust(type, value, exp) {
+	        // If the exp is undefined or zero...
+	        if (typeof exp === 'undefined' || +exp === 0) {
+	          return Math[type](value);
+	        }
+	        value = +value;
+	        exp = +exp;
+
+	        // If the value is not a number or the exp is not an integer...
+	        if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0)) {
+	          return NaN;
+	        }
+
+	        // Shift
+	        value = value.toString().split('e');
+	        value = Math[type](+(value[0] + 'e' + (value[1] ? +value[1] - exp : -exp)));
+
+	        // Shift back
+	        value = value.toString().split('e');
+	        return +(value[0] + 'e' + (value[1] ? +value[1] + exp : exp));
+	      }
+	    }]);
+
+	    return MathExtension;
+	  })();
+
+	  exports.MathExtension = MathExtension;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	//# sourceMappingURL=../util/math-extension.js.map
+
+/***/ },
+/* 15 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(6), __webpack_require__(4), __webpack_require__(14), __webpack_require__(13)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _utilValidator, _locale, _utilMathExtension, _coreFormattersNumberFormatter) {
 	  'use strict';
 
 	  Object.defineProperty(exports, '__esModule', {
@@ -999,13 +1073,12 @@
 	    _createClass(LowExponentTranslationStrategy, [{
 	      key: 'translate',
 	      value: function translate(value) {
-	        var translatedValue = value.toString();
-	        var factorExponent = translatedValue.length - 1;
+	        var factorExponent = Math.round(value).toString().length - 1;
 	        if (factorExponent > 2) {
 	          var factor = Math.pow(10, factorExponent);
-	          return Math.round(value / factor).toString() + _locale.Locale.ExponentDisplay + factorExponent.toString();
+	          return _utilMathExtension.MathExtension.round(value / factor, 2).toString() + _locale.Locale.ExponentDisplay + factorExponent.toString();
 	        } else {
-	          return translatedValue;
+	          return _utilMathExtension.MathExtension.round(value, 2).toString();
 	        }
 	      }
 	    }]);
@@ -1025,7 +1098,7 @@
 	        var exponentIndex = translatedValue.indexOf(_locale.Locale.PositiveExponent);
 	        var exponent = translatedValue.substring(exponentIndex);
 	        var mantissa = translatedValue.substring(0, exponentIndex);
-	        return Math.round(parseInt(mantissa)).toString() + exponent.replace(_locale.Locale.PositiveExponent, _locale.Locale.ExponentDisplay);
+	        return _utilMathExtension.MathExtension.round(parseInt(mantissa), 2).toString() + exponent.replace(_locale.Locale.PositiveExponent, _locale.Locale.ExponentDisplay);
 	      }
 	    }]);
 
@@ -1035,7 +1108,7 @@
 	//# sourceMappingURL=../translators/exponent-translator.js.map
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(6), __webpack_require__(4)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _utilValidator, _locale) {
@@ -1086,10 +1159,10 @@
 	//# sourceMappingURL=../../core/types/unit.js.map
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(2), __webpack_require__(7), __webpack_require__(17)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _translatorHelper, _coreChainCircularTranslationChain, _coreConstantsTimeUnits) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(2), __webpack_require__(7), __webpack_require__(18)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _translatorHelper, _coreChainCircularTranslationChain, _coreConstantsTimeUnits) {
 	  'use strict';
 
 	  Object.defineProperty(exports, '__esModule', {
@@ -1151,10 +1224,10 @@
 	//# sourceMappingURL=../translators/time-translator.js.map
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(4), __webpack_require__(15)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _locale, _typesUnit) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(4), __webpack_require__(16)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _locale, _typesUnit) {
 	  'use strict';
 
 	  Object.defineProperty(exports, '__esModule', {

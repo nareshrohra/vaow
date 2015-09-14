@@ -9,6 +9,11 @@ import {
 from '../locale';
 
 import {
+  MathExtension
+}
+from '../util/math-extension';
+
+import {
   NumberFormatter
 }
 from '../core/formatters/number-formatter';
@@ -32,13 +37,12 @@ export class ExponentTranslator {
 
 class LowExponentTranslationStrategy {
   translate(value) {
-    let translatedValue = value.toString();
-    let factorExponent = translatedValue.length - 1;
+    let factorExponent = Math.round(value).toString().length - 1;
     if (factorExponent > 2) {
       let factor = Math.pow(10, factorExponent);
-      return Math.round(value / factor).toString() + Locale.ExponentDisplay + factorExponent.toString();
+      return MathExtension.round(value / factor, 2).toString() + Locale.ExponentDisplay + factorExponent.toString();
     } else {
-      return translatedValue;
+      return MathExtension.round(value, 2).toString();
     }
   }
 }
@@ -49,6 +53,6 @@ class HighExponentTranslationStrategy {
     let exponentIndex = translatedValue.indexOf(Locale.PositiveExponent);
     let exponent = translatedValue.substring(exponentIndex);
     let mantissa = translatedValue.substring(0, exponentIndex);
-    return Math.round(parseInt(mantissa)).toString() + exponent.replace(Locale.PositiveExponent, Locale.ExponentDisplay);
+    return MathExtension.round(parseInt(mantissa), 2).toString() + exponent.replace(Locale.PositiveExponent, Locale.ExponentDisplay);
   }
 }
