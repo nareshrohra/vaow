@@ -47,8 +47,9 @@
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports) {
 	  'use strict';
 
-	  !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(5), __webpack_require__(16), __webpack_require__(9), __webpack_require__(8), __webpack_require__(7), __webpack_require__(10), __webpack_require__(1), __webpack_require__(17), __webpack_require__(15), __webpack_require__(13)], __WEBPACK_AMD_DEFINE_RESULT__ = function (magnitude, unit, chain, translationChain, circularTranslationChain, translationChainElement, numberTranslator, timeTranslator, exponentTranslator, numberFormatter) {
+	  !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(6), __webpack_require__(5), __webpack_require__(16), __webpack_require__(9), __webpack_require__(8), __webpack_require__(7), __webpack_require__(10), __webpack_require__(1), __webpack_require__(17), __webpack_require__(15), __webpack_require__(13)], __WEBPACK_AMD_DEFINE_RESULT__ = function (validator, magnitude, unit, chain, translationChain, circularTranslationChain, translationChainElement, numberTranslator, timeTranslator, exponentTranslator, numberFormatter) {
 	    window.vaow = {
+	      Validator: validator.Validator,
 	      Magnitude: magnitude.Magnitude,
 	      Unit: unit.Unit,
 	      TranslationChain: translationChain.TranslationChain,

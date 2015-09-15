@@ -1,4 +1,5 @@
 define([
+    './util/validator.js',
     './core/types/magnitude.js',
     './core/types/unit.js',
     './core/chain/chain.js',
@@ -10,9 +11,10 @@ define([
     './translators/exponent-translator.js',
     './core/formatters/number-formatter.js',
   ],
-  function(magnitude, unit, chain, translationChain, circularTranslationChain, translationChainElement, numberTranslator, timeTranslator,
-      exponentTranslator, numberFormatter) {
+  function(validator, magnitude, unit, chain, translationChain, circularTranslationChain, translationChainElement, numberTranslator, timeTranslator,
+    exponentTranslator, numberFormatter) {
     window.vaow = {
+      Validator: validator.Validator,
       Magnitude: magnitude.Magnitude,
       Unit: unit.Unit,
       TranslationChain: translationChain.TranslationChain,
