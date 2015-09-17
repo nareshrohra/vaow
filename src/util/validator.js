@@ -8,6 +8,11 @@ export class Validator {
       !isNaN(value) && value >= 0;
   }
 
+  static isNonZeroPositiveNumber(value) {
+    return Validator.isDefinedAndNotNull(value) &&
+      !isNaN(value) && value > 0;
+  }
+
   static isNumber(value) {
     return Validator.isDefinedAndNotNull(value) &&
       !isNaN(value);

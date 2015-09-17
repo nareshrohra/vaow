@@ -34,4 +34,24 @@ describe('the Validator class', () => {
     let value = 1;
     expect(Validator.isPositiveNumber(value)).toBe(true);
   });
+
+  it('checks string for non-zero positive number ', () => {
+    let value = "a";
+    expect(Validator.isNonZeroPositiveNumber(value)).toBe(false);
+  });
+
+  it('checks negative for non-zero positive number ', () => {
+    let value = -1;
+    expect(Validator.isNonZeroPositiveNumber(-1)).toBe(false);
+  });
+
+  it('checks 0 for non-zero positive number ', () => {
+    let value = 0;
+    expect(Validator.isNonZeroPositiveNumber(value)).toBe(false);
+  });
+
+  it('checks positive for non-zero positive number ', () => {
+    let value = 1;
+    expect(Validator.isNonZeroPositiveNumber(value)).toBe(true);
+  });
 });

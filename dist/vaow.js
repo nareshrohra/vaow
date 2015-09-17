@@ -341,6 +341,11 @@
 	        return Validator.isDefinedAndNotNull(value) && !isNaN(value) && value >= 0;
 	      }
 	    }, {
+	      key: "isNonZeroPositiveNumber",
+	      value: function isNonZeroPositiveNumber(value) {
+	        return Validator.isDefinedAndNotNull(value) && !isNaN(value) && value > 0;
+	      }
+	    }, {
 	      key: "isNumber",
 	      value: function isNumber(value) {
 	        return Validator.isDefinedAndNotNull(value) && !isNaN(value);
