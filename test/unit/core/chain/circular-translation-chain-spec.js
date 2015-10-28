@@ -5,7 +5,7 @@ import {
 from '../../../../src/core/chain/circular-translation-chain';
 
 import {
-  Magnitude
+  Magnitude, OrderOfMagnitude
 }
 from '../../../../src/core/types/magnitude';
 
@@ -15,49 +15,59 @@ import {
 from '../../../../src/core/types/unit';
 
 import {
-  Magnitudes
+  Magnitudes, OrderOfMagnitudes
 }
-from '../../../../src/core/constants/magnitude/magnitudes';
+from '../../../../src/core/constants/number/order-of-magnitudes';
+
+import {
+  Units
+}
+from '../../../../src/core/constants/number/units';
+
+import {
+  Tens
+}
+from '../../../../src/core/constants/number/tens';
 
 let translationChain = null;
 
-beforeEach(() => {
-  translationChain = new CircularTranslationChain();
-});
-
 describe('the CircularTranslationChain class', () => {
+  beforeEach(() => {
+    translationChain = new CircularTranslationChain();
+  });
+
   it('translates 0', () => {
-    let grand = new Magnitude('grand', 1000);
-    translationChain.addMagnitude(grand);
+    let grand = new OrderOfMagnitude('grand', 1000);
+    translationChain.addOrderOfMagnitude(grand);
     expect(translationChain.translate(0)).toBe("0");
   });
 
   it('translates with a single chain element', () => {
-    let grand = new Magnitude('grand', 1000);
-    translationChain.addMagnitude(grand);
+    let grand = new OrderOfMagnitude('grand', 1000);
+    translationChain.addOrderOfMagnitude(grand);
     expect(translationChain.translate(1000)).toBe("1 grand");
   });
 
-  it('translates with value in multiple magnitudes', () => {
-    translationChain.addMagnitude(Magnitudes.Million);
-    translationChain.addMagnitude(Magnitudes.Billion);
-    translationChain.addMagnitude(Magnitudes.Trillion);
+  it('translates with value in multiple OrderOfMagnitudes', () => {
+    translationChain.addOrderOfMagnitude(OrderOfMagnitudes.Million);
+    translationChain.addOrderOfMagnitude(OrderOfMagnitudes.Billion);
+    translationChain.addOrderOfMagnitude(OrderOfMagnitudes.Trillion);
 
-    let value = Magnitudes.Million.getValue() * Magnitudes.Trillion.getValue();
+    let value = OrderOfMagnitudes.Million.getValue() * OrderOfMagnitudes.Trillion.getValue();
     expect(translationChain.translate(value)).toBe("1 million trillion");
   });
 
-  it('translates with units and magnitudes', () => {
+  it('translates with units and OrderOfMagnitudes', () => {
     let mm = new Unit("millimeters", 0);
     translationChain.addUnit(mm);
 
     let feet = new Unit("feet", 304.8);
     translationChain.addUnit(feet);
 
-    translationChain.addMagnitude(Magnitudes.Million);
-    translationChain.addMagnitude(Magnitudes.Billion);
+    translationChain.addOrderOfMagnitude(OrderOfMagnitudes.Million);
+    translationChain.addOrderOfMagnitude(OrderOfMagnitudes.Billion);
 
-    let value = Magnitudes.Million.getValue() * feet.getValue();
+    let value = OrderOfMagnitudes.Million.getValue() * feet.getValue();
     expect(translationChain.translate(value)).toBe("1 million feet");
   });
 
@@ -68,24 +78,73 @@ describe('the CircularTranslationChain class', () => {
     let feet = new Unit("feet", 304.8);
     translationChain.addUnit(feet);
 
-    translationChain.addMagnitude(Magnitudes.Million);
+    translationChain.addOrderOfMagnitude(OrderOfMagnitudes.Million);
 
     let value = 100 * feet.getValue();
     expect(translationChain.translate(value)).toBe("100 feet");
   });
 
-  it('translates with interleaved magnitudes', () => {
-    translationChain.addMagnitude(Magnitudes.Million);
-    translationChain.addMagnitude(Magnitudes.Trillion);
+  it('translates with interleaved OrderOfMagnitudes', () => {
+    translationChain.addOrderOfMagnitude(OrderOfMagnitudes.Million);
+    translationChain.addOrderOfMagnitude(OrderOfMagnitudes.Trillion);
 
-    let value = Magnitudes.Billion.getValue();
+    let value = OrderOfMagnitudes.Billion.getValue();
     expect(translationChain.translate(value)).toBe("1,000 million");
   });
 
   it('translates with rounding', () => {
-    translationChain.addMagnitude(Magnitudes.Million);
+    translationChain.addOrderOfMagnitude(OrderOfMagnitudes.Million);
 
-    let value = 1.25 * Magnitudes.Million.getValue();
+    let value = 1.25 * OrderOfMagnitudes.Million.getValue();
     expect(translationChain.translate(value)).toBe("1.25 million");
+  });
+});
+
+describe('the CircularTranslationChain class with magnitude translation', () => {
+  beforeEach(() => {
+    translationChain = new CircularTranslationChain();
+    translationChain.addMagnitudes(Units.All);
+    translationChain.addMagnitudes(Tens.All);
+  });
+
+  it('translates 0', () => {
+    let grand = new OrderOfMagnitude('grand', 1000);
+    translationChain.addOrderOfMagnitude(grand);
+    expect(translationChain.translate(0)).toBe("0");
+  });
+
+  it('translates 1000', () => {
+    let grand = new OrderOfMagnitude('grand', 1000);
+    translationChain.addOrderOfMagnitude(grand);
+    expect(translationChain.translate(1000)).toBe("one grand");
+  });
+
+  it('translates value in units', () => {
+    expect(translationChain.translate(5)).toBe("five");
+  });
+
+  it('translates value in units-tens', () => {
+    expect(translationChain.translate(55)).toBe("fifty five");
+  });
+
+  it('translates with value in multiple OrderOfMagnitudes and magnitude in units', () => {
+    translationChain.addOrderOfMagnitudes([OrderOfMagnitudes.Million, OrderOfMagnitudes.Billion, OrderOfMagnitudes.Trillion]);
+
+    let value = OrderOfMagnitudes.Million.getValue() * OrderOfMagnitudes.Trillion.getValue();
+    expect(translationChain.translate(value)).toBe("one million trillion");
+  });
+
+  it('translates with value in multiple OrderOfMagnitudes and magnitude in tens', () => {
+    translationChain.addOrderOfMagnitudes([OrderOfMagnitudes.Million, OrderOfMagnitudes.Billion, OrderOfMagnitudes.Trillion]);
+
+    let value = 11 * OrderOfMagnitudes.Million.getValue() * OrderOfMagnitudes.Trillion.getValue();
+    expect(translationChain.translate(value)).toBe("eleven million trillion");
+  });
+
+  it('translates with value in multiple OrderOfMagnitudes and magnitude in unit-tens', () => {
+    translationChain.addOrderOfMagnitudes([OrderOfMagnitudes.Million, OrderOfMagnitudes.Billion, OrderOfMagnitudes.Trillion]);
+
+    let value = 32 * OrderOfMagnitudes.Million.getValue() * OrderOfMagnitudes.Trillion.getValue();
+    expect(translationChain.translate(value)).toBe("thirty two million trillion");
   });
 });

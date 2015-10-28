@@ -1,50 +1,17 @@
 import {
-  TranslatorHelper
+  TranslatorBase
 }
-from './translator-helper';
+from './translator-base';
 
 import {
-  CircularTranslationChain
+  TranslatorOptions, MagnitudeOptions
 }
-from '../core/chain/circular-translation-chain';
+from '../core/types/translator-options';
 
-import {
-  Time
-}
-from '../core/constants/time/units';
-
-export class TimeTranslator {
-  static instance;
-
-  static getInstance() {
-    if (!TimeTranslator.instance) {
-      TimeTranslator.instance = new TimeTranslator();
-    }
-    return TimeTranslator.instance;
-  }
-
-  constructor() {
-    this.translationChain = new CircularTranslationChain();
+export class TimeTranslator extends TranslatorBase {
+  constructor(magnitudeOptions) {
+    super(magnitudeOptions);
+    this._setType(TranslatorOptions.Type.Time);
     this.constructChain();
-  }
-
-  constructChain() {
-    this.addTimeChainElements();
-    TranslatorHelper.addMagnitudes(this.translationChain);
-  }
-
-  addTimeChainElements() {
-    this.translationChain.addUnit(Time.Second);
-    this.translationChain.addUnit(Time.Minute);
-    this.translationChain.addUnit(Time.Hour);
-    this.translationChain.addUnit(Time.Day);
-    this.translationChain.addUnit(Time.Month);
-    this.translationChain.addUnit(Time.Year);
-    this.translationChain.addUnit(Time.Decade);
-    this.translationChain.addUnit(Time.Century);
-  }
-
-  translate(time) {
-    return this.translationChain.translate(time);
   }
 }

@@ -8,18 +8,19 @@ export class CircularTranslationChain extends TranslationChain {
     super(fallbackTranslator);
   }
 
-  performMagnitudeTranslation() {
-    //TODO: refactor
-    let result = this.magnitudeChain.translate(this.currentValue);
-    if (result.isOverflow()) {
-      this.finalResult.increaseByMagnitude(result.getWord());
-      this.currentValue = result.getDigitValue();
-      this.performMagnitudeTranslation();
-    } else if (result.isUnderflow()) {
-      this.finalResult.setDigitValue(result.getDigitValue());
-    } else {
-      this.finalResult.setDigitValue(result.getDigitValue());
-      this.finalResult.increaseByMagnitude(result.getWord());
+  continueWithOrderOfMagnitudeTranslation(value) {
+    if (this.orderOfMagnitudeChain.isNotEmpty()) {
+      let result = this.orderOfMagnitudeChain.translate(value);
+      if (result.isUnderflow()) {
+        this.finalResult.applyElementTranslationResult(result);
+        this.justDoMagnitudeTranslation(this.finalResult.getFactoredValue());
+      } else if (result.isOverflow()) {
+        this.finalResult.applyElementTranslationResultAsOrderOfMagnitude(result);
+        this.continueWithOrderOfMagnitudeTranslation(this.finalResult.getFactoredValue());
+      } else {
+        this.finalResult.applyElementTranslationResultAsOrderOfMagnitude(result);
+        this.justDoMagnitudeTranslation(this.finalResult.getFactoredValue());
+      }
     }
   }
 }

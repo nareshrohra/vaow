@@ -10,12 +10,12 @@ from '../../../../src/core/formatters/number-formatter';
 
 describe('the NumberFormatter class', () => {
   it('handles null value', () => {
-    expect(x => NumberFormatter.format(null)).toThrow(Locale.Error.InvalidArgValue);
+    expect(x => NumberFormatter.format(null)).toThrow(Locale.Error.InvalidArgNumberValue);
   });
 
   it('handles undefined value', () => {
     let test = {};
-    expect(x => NumberFormatter.format(test.undefined)).toThrow(Locale.Error.InvalidArgValue);
+    expect(x => NumberFormatter.format(test.undefined)).toThrow(Locale.Error.InvalidArgNumberValue);
   });
 
   it('formats 100', () => {
@@ -26,7 +26,15 @@ describe('the NumberFormatter class', () => {
     expect(NumberFormatter.format(10000)).toBe('10,000');
   });
 
-  it('formats 1,000,000', () => {
-    expect(NumberFormatter.format(1000000)).toBe('1,000,000');
+  it('formats 100,000', () => {
+    expect(NumberFormatter.format(100000)).toBe('100,000');
+  });
+
+  it('formats -100', () => {
+    expect(NumberFormatter.format(-100)).toBe('-100');
+  });
+
+  it('formats -100,000', () => {
+    expect(NumberFormatter.format(-100000)).toBe('-100,000');
   });
 });

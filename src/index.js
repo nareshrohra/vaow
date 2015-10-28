@@ -12,7 +12,7 @@ define([
     './core/formatters/number-formatter.js',
   ],
   function(validator, magnitude, unit, chain, translationChain, circularTranslationChain, translationChainElement, numberTranslator, timeTranslator,
-    exponentTranslator, numberFormatter) {
+    numberFormatter) {
     window.vaow = {
       Validator: validator.Validator,
       Magnitude: magnitude.Magnitude,
@@ -22,7 +22,6 @@ define([
       TranslationChainElement: translationChainElement.TranslationChainElement,
       NumberTranslator: numberTranslator.NumberTranslator,
       TimeTranslator: timeTranslator.TimeTranslator,
-      ExponentTranslator: exponentTranslator.ExponentTranslator,
       NumberFormatter: numberFormatter.NumberFormatter
     };
   }

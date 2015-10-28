@@ -32,3 +32,7 @@ export class Magnitude {
     return this.value;
   }
 }
+
+export class OrderOfMagnitude extends Magnitude {
+  
+}

@@ -1,33 +1,17 @@
 import {
-  TranslatorHelper
+  TranslatorBase
 }
-from './translator-helper';
+from './translator-base';
 
 import {
-  CircularTranslationChain
+  TranslatorOptions, MagnitudeOptions
 }
-from '../core/chain/circular-translation-chain';
+from '../core/types/translator-options';
 
-export class NumberTranslator {
-  static instance;
-
-  static getInstance() {
-    if (!NumberTranslator.instance) {
-      NumberTranslator.instance = new NumberTranslator();
-    }
-    return NumberTranslator.instance;
-  }
-
-  constructor() {
-    this.translationChain = new CircularTranslationChain();
+export class NumberTranslator extends TranslatorBase {
+  constructor(magnitudeOptions) {
+    super(magnitudeOptions);
+    this._setType(TranslatorOptions.Type.Number);
     this.constructChain();
-  }
-
-  constructChain() {
-    TranslatorHelper.addMagnitudes(this.translationChain);
-  }
-
-  translate(number) {
-    return this.translationChain.translate(number);
   }
 }

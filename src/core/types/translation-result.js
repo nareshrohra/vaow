@@ -13,47 +13,122 @@ import {
 }
 from '../formatters/translation-result-formatter';
 
-export class TranslationResult {
-  constructor() {
-    this.digitValue = '0';
-    this.unit = '';
-    this.magnitudes = [];
-  }
+class TranslationResultBase {
+  _factoredValue = 0;
+  _remainder = 0;
 
-  setDigitValue(digitValue) {
-    if (Validator.isDefinedAndNotNull(digitValue)) {
-      this.digitValue = digitValue;
+  setRemainder(remainder) {
+    if (Validator.isPositiveNumber(remainder)) {
+      this._remainder = remainder;
     } else {
-      throw Locale.Error.InvalidArgDigitValue;
+      throw Locale.Error.InvalidArgRemainder;
     }
   }
 
+  getRemainder() {
+    return this._remainder;
+  }
+
+  setFactoredValue(factoredValue) {
+    if (Validator.isDefinedAndNotNull(factoredValue)) {
+      this._factoredValue = factoredValue;
+    } else {
+      throw Locale.Error.InvalidArgFactoredValue;
+    }
+  }
+
+  getFactoredValue() {
+    return this._factoredValue;
+  }
+}
+
+export class TranslationResult extends TranslationResultBase {
+  _unit = null;
+  _magnitudes = [];
+  _orderOfMagnitudes = [];
+
   setUnit(unit) {
     if (Validator.isDefinedAndNotNull(unit)) {
-      this.unit = unit;
+      this._unit = unit;
     } else {
       throw Locale.Error.InvalidArgUnit;
     }
   }
 
+  getUnit() {
+    return this._unit;
+  }
+
   increaseByMagnitude(magnitude) {
     if (Validator.isDefinedAndNotNull(magnitude)) {
-      this.magnitudes.push(magnitude);
+      if (magnitude !== '') {
+        this._magnitudes.push(magnitude);
+      }
     } else {
       throw Locale.Error.InvalidArgMagnitude;
     }
   }
 
-  getUnit() {
-    return this.unit;
-  }
-
-  getDigitValue() {
-    return this.digitValue;
-  }
-
   getMagnitudes() {
-    return this.magnitudes;
+    return this._magnitudes;
+  }
+
+  increaseByOrderOfMagnitude(orderOfMagnitude) {
+    if (Validator.isDefinedAndNotNull(orderOfMagnitude)) {
+      if (orderOfMagnitude !== '') {
+        this._orderOfMagnitudes.push(orderOfMagnitude);
+      }
+    } else {
+      throw Locale.Error.InvalidArgOrderOfMagnitude;
+    }
+  }
+
+  getOrderOfMagnitudes() {
+    return this._orderOfMagnitudes;
+  }
+
+  applyElementTranslationResult(elementResult) {
+    if (Validator.isDefinedAndNotNull(elementResult)) {
+      let remainder = elementResult.getRemainder(),
+        factoredValue = elementResult.getFactoredValue();
+
+      if (Validator.isNonZeroPositiveNumber(remainder)) {
+        this.setRemainder(remainder);
+      }
+
+      if (Validator.isNumber(factoredValue)) {
+        this.setFactoredValue(factoredValue);
+      }
+    } else {
+      throw Locale.Error.InvalidArgElementResult;
+    }
+  }
+
+  applyElementTranslationResultAsUnit(elementResult) {
+    if (Validator.isDefinedAndNotNull(elementResult)) {
+      this.applyElementTranslationResult(elementResult);
+      this.setUnit(elementResult.getWord());
+    } else {
+      throw Locale.Error.InvalidArgElementResult;
+    }
+  }
+
+  applyElementTranslationResultAsMagnitude(elementResult) {
+    if (Validator.isDefinedAndNotNull(elementResult)) {
+      this.applyElementTranslationResult(elementResult);
+      this.increaseByMagnitude(elementResult.getWord());
+    } else {
+      throw Locale.Error.InvalidArgElementResult;
+    }
+  }
+
+  applyElementTranslationResultAsOrderOfMagnitude(elementResult) {
+    if (Validator.isDefinedAndNotNull(elementResult)) {
+      this.applyElementTranslationResult(elementResult);
+      this.increaseByOrderOfMagnitude(elementResult.getWord());
+    } else {
+      throw Locale.Error.InvalidArgElementResult;
+    }
   }
 
   toString() {
@@ -61,61 +136,68 @@ export class TranslationResult {
   }
 }
 
-export class ElementTranslationResult {
-  constructor(digitValue, word) {
-    this.validate(digitValue, word);
+export class ElementTranslationResult extends TranslationResultBase {
+  _overflow = false;
+  _underflow = false;
+  _incomplete = false;
+  _word = '';
 
-    this.digitValue = digitValue;
-    this.word = word;
-    this.overflow = false;
-    this.underflow = false;
-  }
-
-  validate(digitValue, word) {
-    if (!Validator.isNumber(digitValue)) {
-      throw Locale.Error.InvalidArgNumberDigitValue;
-    }
-
-    if (!Validator.isDefinedAndNotNull(word)) {
+  constructor(word) {
+    if (Validator.isDefinedAndNotNull(word)) {
+      super();
+      this._word = word;
+    } else {
       throw Locale.Error.InvalidArgWord;
     }
   }
 
-  setOverflow() {
-    this.overflow = true;
+  getWord() {
+    return this._word;
   }
 
-  setUnderflow() {
-    this.underflow = true;
+
+  setIncomplete() {
+    this._incomplete = true;
+  }
+
+  isIncomplete() {
+    return this._incomplete;
+  }
+
+  setOverflow() {
+    this._overflow = true;
   }
 
   isOverflow() {
-    return this.overflow;
+    return this._overflow;
+  }
+
+  setUnderflow() {
+    this._underflow = true;
   }
 
   isUnderflow() {
-    return this.underflow;
-  }
-
-  getWord() {
-    return this.word;
-  }
-
-  getDigitValue() {
-    return this.digitValue;
+    return this._underflow;
   }
 }
 
 export class OverflowElementTranslationResult extends ElementTranslationResult {
-  constructor(digitValue, word) {
-    super(digitValue, word);
+  constructor(word) {
+    super(word || '');
     this.setOverflow();
   }
 }
 
 export class UnderflowElementTranslationResult extends ElementTranslationResult {
-  constructor(digitValue, word) {
-    super(digitValue, word);
+  constructor(word) {
+    super(word || '');
     this.setUnderflow();
+  }
+}
+
+export class IncompleteElementTranslationResult extends ElementTranslationResult {
+  constructor(word) {
+    super(word || '');
+    this.setIncomplete();
   }
 }

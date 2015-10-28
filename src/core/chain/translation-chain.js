@@ -19,9 +19,9 @@ import {
 from './translation-chain-element';
 
 import {
-  ExponentTranslator
+  MagnitudeTranslationChainElement
 }
-from '../../translators/exponent-translator'
+from './magnitude-translation-chain-element'
 
 import {
   TranslationResult
@@ -29,12 +29,11 @@ import {
 from '../types/translation-result';
 
 export class TranslationChain {
-  constructor(fallbackTranslator) {
+  constructor() {
     this.unitChain = new Chain();
     this.magnitudeChain = new Chain();
+    this.orderOfMagnitudeChain = new Chain();
     this.finalResult = null;
-    this.currentValue = null;
-    this.fallbackTranslator = fallbackTranslator || new ExponentTranslator();
   }
 
   addUnit(unit) {
@@ -45,27 +44,59 @@ export class TranslationChain {
     }
   }
 
+  addUnits(units) {
+    if (Validator.isDefinedAndNotNull(units)) {
+      let unitsCount = units.length;
+      for (let i = 0; i < unitsCount; i++) {
+        this.addUnit(units[i]);
+      }
+    } else {
+      throw Locale.Error.InvalidArgUnits;
+    }
+  }
+
   addMagnitude(magnitude) {
     if (Validator.isDefinedAndNotNull(magnitude)) {
-      this.magnitudeChain.addChainElement(new TranslationChainElement(magnitude));
+      this.magnitudeChain.addChainElement(new MagnitudeTranslationChainElement(magnitude));
     } else {
       throw Locale.Error.InvalidArgMagnitude;
     }
   }
 
-  isUnitChainNotEmpty() {
-    return this.unitChain.isNotEmpty();
+  addMagnitudes(magnitudes) {
+    if (Validator.isDefinedAndNotNull(magnitudes)) {
+      let count = magnitudes.length;
+      for (let i = 0; i < count; i++) {
+        this.addMagnitude(magnitudes[i]);
+      }
+    } else {
+      throw Locale.Error.InvalidArgMagnitudes;
+    }
   }
 
-  isMagnitudeChainNotEmpty() {
-    return this.magnitudeChain.isNotEmpty();
+  addOrderOfMagnitude(orderOfMagnitude) {
+    if (Validator.isDefinedAndNotNull(orderOfMagnitude)) {
+      this.orderOfMagnitudeChain.addChainElement(new TranslationChainElement(orderOfMagnitude));
+    } else {
+      throw Locale.Error.InvalidArgOrderOfMagnitude;
+    }
+  }
+
+  addOrderOfMagnitudes(orderOfMagnitudes) {
+    if (Validator.isDefinedAndNotNull(orderOfMagnitudes)) {
+      let magnitudesCount = orderOfMagnitudes.length;
+      for (let i = 0; i < magnitudesCount; i++) {
+        this.addOrderOfMagnitude(orderOfMagnitudes[i]);
+      }
+    } else {
+      throw Locale.Error.InvalidArgOrderOfMagnitudes;
+    }
   }
 
   translate(value) {
-    this.currentValue = value;
     if (Validator.isPositiveNumber(value)) {
-      if (this.isUnitChainNotEmpty() || this.isMagnitudeChainNotEmpty()) {
-        this.performTranslation();
+      if (this.unitChain.isNotEmpty() || this.magnitudeChain.isNotEmpty() || this.orderOfMagnitudeChain.isNotEmpty()) {
+        this.performTranslation(value);
         return this.finalResult.toString();
       } else {
         throw Locale.Error.UnitsMagnitudesNotAdded;
@@ -75,51 +106,71 @@ export class TranslationChain {
     }
   }
 
-  performTranslation() {
+  performTranslation(value) {
     this.finalResult = new TranslationResult();
-    if (this.isUnitChainNotEmpty()) {
-      this.performUnitAndMagnitudeTranslation();
-    } else {
-      this.performMagnitudeTranslation();
-    }
+    this.finalResult.setFactoredValue(value);
+    this.continueWithUnitTranslation(value);
   }
 
-  performUnitAndMagnitudeTranslation(isMagnitudeChainEmpty) {
-    //TODO: refactor
-    let result = this.unitChain.translate(this.currentValue);
-    if (result.isOverflow()) {
-      this.finalResult.setUnit(result.getWord());
-      this.currentValue = result.getDigitValue();
-      if (this.isMagnitudeChainNotEmpty()) {
-        this.performMagnitudeTranslation();
+  continueWithUnitTranslation(value) {
+    if (this.unitChain.isNotEmpty()) {
+      let result = this.unitChain.translate(value);
+      if (!result.isUnderflow()) {
+        this.finalResult.applyElementTranslationResultAsUnit(result);
+        this.continueWithMagnitudeTranslation(this.finalResult.getFactoredValue());
       } else {
-        this.performFallbackTranslation();
+        this.finalResult.applyElementTranslationResult(result);
+        this.continueWithMagnitudeTranslation(this.finalResult.getFactoredValue());
       }
-    } else if (result.isUnderflow()) {
-      this.finalResult.setDigitValue(result.getDigitValue());
+      if (result.isOverflow()) {
+        this.continueWithMagnitudeTranslation(this.finalResult.getFactoredValue());
+      }
     } else {
-      this.finalResult.setUnit(result.getWord());
-      this.finalResult.setDigitValue(result.getDigitValue());
+      this.continueWithMagnitudeTranslation(this.finalResult.getFactoredValue());
     }
   }
 
-  performMagnitudeTranslation() {
-    //TODO: refactor
-    let result = this.magnitudeChain.translate(this.currentValue);
-    if (result.isOverflow()) {
-      this.finalResult.increaseByMagnitude(result.getWord());
-      this.currentValue = result.getDigitValue();
-      this.performFallbackTranslation();
-    } else if (result.isUnderflow()) {
-      this.finalResult.setDigitValue(result.getDigitValue());
+  continueWithMagnitudeTranslation(value) {
+    if (this.magnitudeChain.isNotEmpty()) {
+      let result = this.magnitudeChain.translate(value);
+      if (result.isUnderflow()) {
+        this.finalResult.applyElementTranslationResult(result);
+      } else if (result.isIncomplete()) {
+        this.finalResult.applyElementTranslationResultAsMagnitude(result);
+        this.justDoMagnitudeTranslation(this.finalResult.getRemainder());
+      } else {
+        this.finalResult.applyElementTranslationResultAsMagnitude(result);
+      }
+      if (result.isOverflow()) {
+        this.continueWithOrderOfMagnitudeTranslation(this.finalResult.getFactoredValue());
+      }
     } else {
-      this.finalResult.setDigitValue(result.getDigitValue());
-      this.finalResult.increaseByMagnitude(result.getWord());
+      this.continueWithOrderOfMagnitudeTranslation(this.finalResult.getFactoredValue());
     }
   }
 
-  performFallbackTranslation(value) {
-    let result = this.fallbackTranslator.translate(this.currentValue);
-    this.finalResult.setDigitValue(result);
+  justDoMagnitudeTranslation(value) {
+    if (this.magnitudeChain.isNotEmpty()) {
+      let result = this.magnitudeChain.translate(value);
+      if (result.isUnderflow()) {
+        this.finalResult.applyElementTranslationResult(result);
+      } else if (result.isIncomplete()) {
+        this.finalResult.applyElementTranslationResultAsMagnitude(result);
+        this.justDoMagnitudeTranslation(this.finalResult.getRemainder());
+      } else {
+        this.finalResult.applyElementTranslationResultAsMagnitude(result);
+      }
+    }
+  }
+
+  continueWithOrderOfMagnitudeTranslation(value) {
+    if (this.orderOfMagnitudeChain.isNotEmpty()) {
+      let result = this.orderOfMagnitudeChain.translate(value);
+      if (result.isUnderflow()) {
+        this.finalResult.applyElementTranslationResult(result);
+      } else {
+        this.finalResult.applyElementTranslationResultAsOrderOfMagnitude(result);
+      }
+    }
   }
 }

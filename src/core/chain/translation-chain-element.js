@@ -42,22 +42,35 @@ export class TranslationChainElement {
   }
 
   translate(value) {
+    let result = null;
     if (value < this.getValue()) {
-      return new UnderflowElementTranslationResult(value, this.getWord());
+      result = new UnderflowElementTranslationResult();
+      result.setFactoredValue(value);
+      return result;
     } else if (!this.nextElement) {
-      let factoredValue = this.factorWithCurrentBase(value);
-      return new OverflowElementTranslationResult(factoredValue, this.getWord());
+      result = new OverflowElementTranslationResult(this.getWord());
+      result.setFactoredValue(this.factorWithBase(value));
+      result.setRemainder(this.getRemainderWithBase(value));
+      return result;
     } else if (value < this.nextElement.getValue()) {
-      let factoredValue = this.factorWithCurrentBase(value);
-      return new ElementTranslationResult(factoredValue, this.getWord());
+      result = new ElementTranslationResult(this.getWord());
+      result.setFactoredValue(this.factorWithBase(value));
+      result.setRemainder(this.getRemainderWithBase(value));
+      return result;
     } else {
       return this.nextElement.translate(value);
     }
   }
 
-  factorWithCurrentBase(value) {
+  factorWithBase(value) {
     let conversionFactor = this.getValue();
     conversionFactor = conversionFactor > 0 ? conversionFactor : 1;
     return value / conversionFactor;
+  }
+
+  getRemainderWithBase(value) {
+    let conversionFactor = this.getValue();
+    conversionFactor = conversionFactor > 0 ? conversionFactor : 1;
+    return value % conversionFactor;
   }
 }
