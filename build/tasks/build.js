@@ -16,7 +16,7 @@ var concat = require('gulp-concat');
 gulp.task('build-system', function () {
   return gulp.src(paths.source)
     .pipe(sourcemaps.init())
-    .pipe(to5({ modules: "amd" }))
+    .pipe(to5(compilerOptions))
     .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest(paths.tmp));
 });
