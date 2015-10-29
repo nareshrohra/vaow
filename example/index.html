@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+  <meta name="apple-mobile-web-app-title" content="sample page for vaow.js">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <title>Sample vaow.js</title>
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+  <style>
+    section {
+      margin: 10px;
+    }
+  </style>
+</head>
+
+<body class="container" data-ng-app="app">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      Examples
+    </div>
+    <div clalss="panel-body" data-ng-controller="appController">
+      <section data-ng-repeat="t in translationMetaData" class="translation">
+        <div id="{{t.id}}">
+          <div class="row">
+            <div class="col-md-4">
+              <h4>{{t.title}}</h4>
+            </div>
+            <div class="col-md-4">
+              <input class="btn btn-default btn-sm" type="button" value="Translate" data-ng-click="runTranslationAndDisplayResult(t)">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              Translate
+              <span class="label label-default">{{t.value}}</span>
+            </div>
+            <div class="col-md-4">Translation:
+              <span class="result label label-info"></span>
+            </div>
+          </div>
+          <div>&nbsp;</div>
+          <div class="row">
+            <div class="col-md-12">
+              <pre>{{getMethodDefinition(t)}}</pre>
+            </div>
+          </div>
+          <hr/>
+        </div>
+      </section>
+    </div>
+  </div>
+</body>
+<script src="../dist/vaow.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.5/angular.min.js"></script>
+<script>
+  function translateNumber(value) {
+    var translator = new vaow.NumberTranslator();
+    return translator.translate(value);
+  }
+
+  function translateTime(value) {
+    var translator = new vaow.TimeTranslator();
+    return translator.translate(value);
+  }
+</script>
+<script>
+  var app = angular.module("app", [])
+  app.controller('appController', function($scope) {
+    $scope.translationMetaData = [
+      new TranslationMetaData('Number translator', 'numberTranslation', Math.pow(10, 6), translateNumber),
+      new TranslationMetaData('Time translator', 'timeTranslation', 86400 * 366, translateTime)
+    ];
+
+    $scope.runTranslationAndDisplayResult = function(translationMetaData) {
+      var translation = translationMetaData.translationHandler(translationMetaData.value);
+      $('#' + translationMetaData.id + ' .result').html(translation);
+    };
+
+    $scope.getMethodDefinition = function(translationMetaData) {
+      var methodDefn = translationMetaData.translationHandler.toString();
+      methodDefn = methodDefn.replace('value', '');
+      methodDefn = methodDefn.replace('value', translationMetaData.value);
+      return methodDefn;
+    };
+  });
+
+  function TranslationMetaData(title, id, value, tHandler) {
+    this.title = title;
+    this.id = id;
+    this.value = value;
+    this.translationHandler = tHandler;
+  }
+</script>
+
+</html>
