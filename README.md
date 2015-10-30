@@ -19,17 +19,48 @@ Even easier! After downloading the zip and extracting. Take the **dist/vaow.js**
 ----------
 # Sample code
 
-## Translating a number
+## Translating number with default options
 
+    //using the NumberTranslator with default options
     var translator = new vaow.NumberTranslator();
-    var number = Math.pow(10, 6);
-    translator.translate(number); //will return 1 million
+    var value = Math.pow(10, 6); //million
+    return translator.translate(value); //returns "1 million"
 
-## Translating time
+## Translating number with magnitude translation enabled
 
+    //create an instance of TranslatorOptions
+    var magnitudeOptions = new vaow.types.MagnitudeOptions();
+
+    //enable magnitude translation
+    magnitudeOptions.TranslateMagnitudes = true;
+
+    //create an instance of NumberTranslator with translator-options
+    var translator = new vaow.NumberTranslator(magnitudeOptions);
+
+    var value = Math.pow(10, 6); //million
+    return translator.translate(value); //returns "one million"
+
+## Translating time with default options
+
+    //using the TimeTranslator with default options
     var translator = new vaow.TimeTranslator();
-    var seconds = 120;
-    translator.translate(seconds); //will return 2 minutes
+    var value = 86400 * 366; //366 days
+    return translator.translate(value); //returns "1 years"
+
+## Creating your own translation chain
+
+    //Create an instance of the translation-chain
+    var translationChain = new vaow.CircularTranslationChain();
+
+    //add order-of-magnitudes for translation
+    translationChain.addOrderOfMagnitude(vaow.constants.number.OrderOfMagnitudes.Million);
+    translationChain.addOrderOfMagnitude(vaow.constants.number.OrderOfMagnitudes.Billion);
+    translationChain.addOrderOfMagnitude(vaow.constants.number.OrderOfMagnitudes.Trillion);
+
+    //million x trillion
+    var value = Math.pow(10, 6) * Math.pow(10, 12);
+
+    return translationChain.translate(value); //returns "1 million trillion"
 
 ----------
 # License
