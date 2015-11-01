@@ -30,6 +30,14 @@ describe('the NumberFormatter class', () => {
     expect(NumberFormatter.format(100000)).toBe('100,000');
   });
 
+  it('formats 15,000,000', () => {
+    expect(NumberFormatter.format(15 * Math.pow(10, 6))).toBe('1.5 x 10^7');
+  });
+
+  it('formats 135,000,000', () => {
+    expect(NumberFormatter.format(135 * Math.pow(10, 6))).toBe('1.35 x 10^8');
+  });
+
   it('formats -100', () => {
     expect(NumberFormatter.format(-100)).toBe('-100');
   });

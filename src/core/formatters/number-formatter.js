@@ -61,6 +61,6 @@ class ExponentFormattingStrategy {
     let exponentIndex = formattedValue.indexOf(Locale.PositiveExponent);
     let exponent = formattedValue.substring(exponentIndex);
     let mantissa = formattedValue.substring(0, exponentIndex);
-    return MathExtension.round(parseInt(mantissa), 2).toString() + exponent.replace(Locale.PositiveExponent, Locale.ExponentDisplay);
+    return MathExtension.round(parseFloat(mantissa), 2).toString() + exponent.replace(Locale.PositiveExponent, Locale.ExponentDisplay);
   }
 }
