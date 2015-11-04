@@ -1143,7 +1143,7 @@
 	        var exponentIndex = formattedValue.indexOf(_locale.Locale.PositiveExponent);
 	        var exponent = formattedValue.substring(exponentIndex);
 	        var mantissa = formattedValue.substring(0, exponentIndex);
-	        return _utilMathExtension.MathExtension.round(parseInt(mantissa), 2).toString() + exponent.replace(_locale.Locale.PositiveExponent, _locale.Locale.ExponentDisplay);
+	        return _utilMathExtension.MathExtension.round(parseFloat(mantissa), 2).toString() + exponent.replace(_locale.Locale.PositiveExponent, _locale.Locale.ExponentDisplay);
 	      }
 	    }]);
 

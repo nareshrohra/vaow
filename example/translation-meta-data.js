@@ -53,3 +53,37 @@ translationMetaDataSet.push(new TranslationMetaData('Creating your own translati
 
   return translationChain.translate(value); //returns "1 million trillion"
 }));
+
+//Custom translator
+translationMetaDataSet.push(new TranslationMetaData('Creating your own translator', 'customTranslator1', function() {
+  //Create the translator class
+  var DistanceTranslator = function(magnitudeOptions) {
+    //create instance of TranslatorBase
+    var base = new vaow.TranslatorBase(magnitudeOptions);
+    //set translator type as "Custom"
+    base._setType("Custom");
+
+    //the base will add magnitudes and order-of-magnitudes per the magnitudeOptions
+    base.constructChain();
+    var translationChain = base.translationChain;
+
+    //Create units. Considering the smallest unit is millimeter
+    var mm = new vaow.types.Unit('millimeters', 0);
+    var meter = new vaow.types.Unit('meters', 1000);
+    var kilometer = new vaow.types.Unit('kilometers', meter.getValue() * 1000);
+
+    //add units to the chain
+    translationChain.addUnits([mm, meter, kilometer]);
+
+    //return the base; alternatively inherit DistanceTranslator from base
+    return base;
+  };
+
+  //15 killometers
+  //kilometer = 1000 * meter where meter = 1000 * millimeters; hence kilometer = 1000 * 1000 = 10^6
+  var value = 15 * Math.pow(10, 6);
+
+  //try your new translator
+  var distanceTranslator = new DistanceTranslator();
+  return distanceTranslator.translate(value); //returns "15 killometers"
+}));
