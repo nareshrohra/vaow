@@ -36,6 +36,11 @@ describe('the TranslatorOptions class', () => {
     translatorOptions.MagnitudeOptions = magnitudeOptions;
     expect(translatorOptions.MagnitudeOptions).toEqual(magnitudeOptions);
   });
+
+  it('sets and gets TranslateRecursively', () => {
+    let translatorOptions = new TranslatorOptions(TranslatorOptions.Type.Number, new MagnitudeOptions(), true);
+    expect(translatorOptions.TranslateRecursively).toEqual(true);
+  });
 });
 
 describe('the MagnitudeOptions class', () => {

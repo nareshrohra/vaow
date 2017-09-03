@@ -142,7 +142,7 @@ describe('the NumberTranslator class', () => {
     it('translates 95', () => {
       expect(translator.translate(95)).toBe('ninety five');
     });
-    
+
     it('translates 99', () => {
       expect(translator.translate(99)).toBe('ninety nine');
     });
@@ -162,5 +162,35 @@ describe('the NumberTranslator class', () => {
     it('translates 1000', () => {
       expect(translator.translate(1000)).toBe('1 thousand');
     });
+  });
+
+  describe('with recursive translation option', () => {
+    beforeEach(() => {
+      let magnitudeOptions = new MagnitudeOptions();
+      magnitudeOptions.TranslateMagnitudes = true;
+      magnitudeOptions.TranslateVeryLowOrderOfMagnitudes = true;
+      translator = new NumberTranslator(magnitudeOptions, true);
+    });
+
+    it('translates 100', () => {
+      expect(translator.translate(100)).toBe('one hundred');
+    });
+
+    it('translates 1000', () => {
+      expect(translator.translate(1000)).toBe('one thousand');
+    });
+
+    it('translates 1040', () => {
+      expect(translator.translate(1040)).toBe('one thousand fourty');
+    });
+
+    it('translates 90,223', () => {
+      expect(translator.translate(90223)).toBe('ninety thousand two hundred twenty three');
+    });
+
+    it('translates 123,222', () => {
+      expect(translator.translate(123222)).toBe('one hundred twenty three thousand two hundred twenty two');
+    });
+
   });
 });

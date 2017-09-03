@@ -4,6 +4,7 @@ define([
     './core/chain/chain.js',
     './core/chain/translation-chain.js',
     './core/chain/circular-translation-chain.js',
+    './core/chain/recursive-translation-chain.js',
     './core/chain/translation-chain-element.js',
     './core/chain/magnitude-translation-chain-element.js',
 
@@ -30,7 +31,7 @@ define([
   ],
   function(
     //chain
-    chain, translationChain, circularTranslationChain, translationChainElement, magnitudeTranslationChainElement,
+    chain, translationChain, circularTranslationChain, recursiveTranslationChain, translationChainElement, magnitudeTranslationChainElement,
     //formatters
     numberFormatter, translationResultFormatter,
     //constants
@@ -48,6 +49,7 @@ define([
       Chain: chain.Chain,
       TranslationChain: translationChain.TranslationChain,
       CircularTranslationChain: circularTranslationChain.CircularTranslationChain,
+      RecursiveTranslationChain: recursiveTranslationChain.RecursiveTranslationChain,
       TranslationChainElement: translationChainElement.TranslationChainElement,
       MagnitudeTranslationChainElement: magnitudeTranslationChainElement.MagnitudeTranslationChainElement,
 

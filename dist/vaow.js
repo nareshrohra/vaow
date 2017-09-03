@@ -47,9 +47,9 @@
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports) {
 	  'use strict';
 
-	  !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(5), __webpack_require__(4), __webpack_require__(15), __webpack_require__(6), __webpack_require__(11), __webpack_require__(9), __webpack_require__(8), __webpack_require__(12), __webpack_require__(13), __webpack_require__(14), __webpack_require__(21), __webpack_require__(1), __webpack_require__(7), __webpack_require__(16), __webpack_require__(17), __webpack_require__(18), __webpack_require__(22), __webpack_require__(19), __webpack_require__(2), __webpack_require__(3)], __WEBPACK_AMD_DEFINE_RESULT__ = function (
+	  !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(5), __webpack_require__(4), __webpack_require__(16), __webpack_require__(12), __webpack_require__(6), __webpack_require__(11), __webpack_require__(9), __webpack_require__(8), __webpack_require__(13), __webpack_require__(14), __webpack_require__(15), __webpack_require__(22), __webpack_require__(1), __webpack_require__(7), __webpack_require__(17), __webpack_require__(18), __webpack_require__(19), __webpack_require__(23), __webpack_require__(20), __webpack_require__(2), __webpack_require__(3)], __WEBPACK_AMD_DEFINE_RESULT__ = function (
 	  //chain
-	  chain, translationChain, circularTranslationChain, translationChainElement, magnitudeTranslationChainElement,
+	  chain, translationChain, circularTranslationChain, recursiveTranslationChain, translationChainElement, magnitudeTranslationChainElement,
 	  //formatters
 	  numberFormatter, translationResultFormatter,
 	  //constants
@@ -66,6 +66,7 @@
 	      Chain: chain.Chain,
 	      TranslationChain: translationChain.TranslationChain,
 	      CircularTranslationChain: circularTranslationChain.CircularTranslationChain,
+	      RecursiveTranslationChain: recursiveTranslationChain.RecursiveTranslationChain,
 	      TranslationChainElement: translationChainElement.TranslationChainElement,
 	      MagnitudeTranslationChainElement: magnitudeTranslationChainElement.MagnitudeTranslationChainElement,
 
@@ -361,7 +362,7 @@
 	      this.unitChain = new _chain.Chain();
 	      this.magnitudeChain = new _chain.Chain();
 	      this.orderOfMagnitudeChain = new _chain.Chain();
-	      this.finalResult = null;
+	      this.result = null;
 	    }
 
 	    _createClass(TranslationChain, [{
@@ -428,12 +429,22 @@
 	        }
 	      }
 	    }, {
+	      key: 'copyFrom',
+	      value: function copyFrom(translationChain) {
+	        this.unitChain.empty();
+	        this.unitChain.copyFrom(translationChain.unitChain);
+	        this.magnitudeChain.empty();
+	        this.magnitudeChain.copyFrom(translationChain.magnitudeChain);
+	        this.orderOfMagnitudeChain.empty();
+	        this.orderOfMagnitudeChain.copyFrom(translationChain.orderOfMagnitudeChain);
+	      }
+	    }, {
 	      key: 'translate',
 	      value: function translate(value) {
 	        if (_utilValidator.Validator.isPositiveNumber(value)) {
 	          if (this.unitChain.isNotEmpty() || this.magnitudeChain.isNotEmpty() || this.orderOfMagnitudeChain.isNotEmpty()) {
 	            this.performTranslation(value);
-	            return this.finalResult.toString();
+	            return this.result.toString();
 	          } else {
 	            throw _locale.Locale.Error.UnitsMagnitudesNotAdded;
 	          }
@@ -442,10 +453,15 @@
 	        }
 	      }
 	    }, {
+	      key: 'reset',
+	      value: function reset(value) {
+	        this.result = new _typesTranslationResult.TranslationResult();
+	        this.result.setFactoredValue(value);
+	      }
+	    }, {
 	      key: 'performTranslation',
 	      value: function performTranslation(value) {
-	        this.finalResult = new _typesTranslationResult.TranslationResult();
-	        this.finalResult.setFactoredValue(value);
+	        this.reset(value);
 	        this.continueWithUnitTranslation(value);
 	      }
 	    }, {
@@ -454,17 +470,16 @@
 	        if (this.unitChain.isNotEmpty()) {
 	          var result = this.unitChain.translate(value);
 	          if (!result.isUnderflow()) {
-	            this.finalResult.applyElementTranslationResultAsUnit(result);
-	            this.continueWithMagnitudeTranslation(this.finalResult.getFactoredValue());
+	            this.result.applyElementTranslationResultAsUnit(result);
 	          } else {
-	            this.finalResult.applyElementTranslationResult(result);
-	            this.continueWithMagnitudeTranslation(this.finalResult.getFactoredValue());
+	            this.result.applyElementTranslationResult(result);
+	            this.continueWithMagnitudeTranslation(this.result.getFactoredValue());
 	          }
 	          if (result.isOverflow()) {
-	            this.continueWithMagnitudeTranslation(this.finalResult.getFactoredValue());
+	            this.continueWithMagnitudeTranslation(this.result.getFactoredValue());
 	          }
 	        } else {
-	          this.continueWithMagnitudeTranslation(this.finalResult.getFactoredValue());
+	          this.continueWithMagnitudeTranslation(this.result.getFactoredValue());
 	        }
 	      }
 	    }, {
@@ -473,18 +488,18 @@
 	        if (this.magnitudeChain.isNotEmpty()) {
 	          var result = this.magnitudeChain.translate(value);
 	          if (result.isUnderflow()) {
-	            this.finalResult.applyElementTranslationResult(result);
+	            this.result.applyElementTranslationResult(result);
 	          } else if (result.isIncomplete()) {
-	            this.finalResult.applyElementTranslationResultAsMagnitude(result);
-	            this.justDoMagnitudeTranslation(this.finalResult.getRemainder());
+	            this.result.applyElementTranslationResultAsMagnitude(result);
+	            this.justDoMagnitudeTranslation(this.result.getRemainder());
 	          } else {
-	            this.finalResult.applyElementTranslationResultAsMagnitude(result);
+	            this.result.applyElementTranslationResultAsMagnitude(result);
 	          }
 	          if (result.isOverflow()) {
-	            this.continueWithOrderOfMagnitudeTranslation(this.finalResult.getFactoredValue());
+	            this.continueWithOrderOfMagnitudeTranslation(this.result.getFactoredValue());
 	          }
 	        } else {
-	          this.continueWithOrderOfMagnitudeTranslation(this.finalResult.getFactoredValue());
+	          this.continueWithOrderOfMagnitudeTranslation(this.result.getFactoredValue());
 	        }
 	      }
 	    }, {
@@ -493,12 +508,13 @@
 	        if (this.magnitudeChain.isNotEmpty()) {
 	          var result = this.magnitudeChain.translate(value);
 	          if (result.isUnderflow()) {
-	            this.finalResult.applyElementTranslationResult(result);
+	            this.result.applyElementTranslationResult(result);
 	          } else if (result.isIncomplete()) {
-	            this.finalResult.applyElementTranslationResultAsMagnitude(result);
-	            this.justDoMagnitudeTranslation(this.finalResult.getRemainder());
+	            this.result.applyElementTranslationResultAsMagnitude(result);
+	            this.justDoMagnitudeTranslation(this.result.getRemainder());
 	          } else {
-	            this.finalResult.applyElementTranslationResultAsMagnitude(result);
+	            this.result.setRemainder(0);
+	            this.result.applyElementTranslationResultAsMagnitude(result);
 	          }
 	        }
 	      }
@@ -508,9 +524,9 @@
 	        if (this.orderOfMagnitudeChain.isNotEmpty()) {
 	          var result = this.orderOfMagnitudeChain.translate(value);
 	          if (result.isUnderflow()) {
-	            this.finalResult.applyElementTranslationResult(result);
+	            this.result.applyElementTranslationResult(result);
 	          } else {
-	            this.finalResult.applyElementTranslationResultAsOrderOfMagnitude(result);
+	            this.result.applyElementTranslationResultAsOrderOfMagnitude(result);
 	          }
 	        }
 	      }
@@ -583,6 +599,22 @@
 	      value: function appendToChain(chainElement) {
 	        this.tail.setNextElement(chainElement);
 	        this.tail = chainElement;
+	      }
+	    }, {
+	      key: 'empty',
+	      value: function empty() {
+	        var destroy = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
+
+	        this.head = null;
+	      }
+	    }, {
+	      key: 'copyFrom',
+	      value: function copyFrom(chain) {
+	        var element = chain.head;
+	        while (element !== null) {
+	          this.addChainElement(element);
+	          element = element.nextElement;
+	        }
 	      }
 	    }, {
 	      key: 'translate',
@@ -741,7 +773,7 @@
 	    }, {
 	      key: 'setFactoredValue',
 	      value: function setFactoredValue(factoredValue) {
-	        if (_utilValidator.Validator.isDefinedAndNotNull(factoredValue)) {
+	        if (_utilValidator.Validator.isNumber(factoredValue)) {
 	          this._factoredValue = factoredValue;
 	        } else {
 	          throw _locale.Locale.Error.InvalidArgFactoredValue;
@@ -822,7 +854,6 @@
 	        if (_utilValidator.Validator.isDefinedAndNotNull(elementResult)) {
 	          var remainder = elementResult.getRemainder(),
 	              factoredValue = elementResult.getFactoredValue();
-
 	          if (_utilValidator.Validator.isNonZeroPositiveNumber(remainder)) {
 	            this.setRemainder(remainder);
 	          }
@@ -858,11 +889,13 @@
 	      key: 'applyElementTranslationResultAsOrderOfMagnitude',
 	      value: function applyElementTranslationResultAsOrderOfMagnitude(elementResult) {
 	        if (_utilValidator.Validator.isDefinedAndNotNull(elementResult)) {
+	          //elementResult.getRemainder() === 3 && console.log('applyElementTranslationResultAsOrderOfMagnitude', 'before', elementResult);
 	          this.applyElementTranslationResult(elementResult);
 	          this.increaseByOrderOfMagnitude(elementResult.getWord());
+	          //elementResult.getRemainder() === 3 && console.log('applyElementTranslationResultAsOrderOfMagnitude', 'after', elementResult);
 	        } else {
-	          throw _locale.Locale.Error.InvalidArgElementResult;
-	        }
+	            throw _locale.Locale.Error.InvalidArgElementResult;
+	          }
 	      }
 	    }, {
 	      key: 'toString',
@@ -1024,7 +1057,7 @@
 	      key: 'getDigitValueString',
 	      value: function getDigitValueString(translationResult) {
 	        var digitValue = translationResult.getFactoredValue();
-	        return _utilValidator.Validator.isDefinedAndNotNull(digitValue) ? _numberFormatter.NumberFormatter.format(digitValue) : '';
+	        return _utilValidator.Validator.isPositiveNumber(digitValue) ? _numberFormatter.NumberFormatter.format(digitValue) : '';
 	      }
 	    }, {
 	      key: 'getUnitString',
@@ -1291,6 +1324,122 @@
 /* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(4)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _translationChain) {
+	  'use strict';
+
+	  Object.defineProperty(exports, '__esModule', {
+	    value: true
+	  });
+
+	  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	  var _get = function get(_x2, _x3, _x4) { var _again = true; _function: while (_again) { var object = _x2, property = _x3, receiver = _x4; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x2 = parent; _x3 = property; _x4 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	  var RecursiveTranslationChain = (function (_TranslationChain) {
+	    _inherits(RecursiveTranslationChain, _TranslationChain);
+
+	    function RecursiveTranslationChain(underlyingChain) {
+	      _classCallCheck(this, RecursiveTranslationChain);
+
+	      _get(Object.getPrototypeOf(RecursiveTranslationChain.prototype), 'constructor', this).call(this);
+	      this._underlyingChain = underlyingChain;
+	      this._isUnderlyingChainSetup = false;
+	    }
+
+	    _createClass(RecursiveTranslationChain, [{
+	      key: 'addUnit',
+	      value: function addUnit(unit) {
+	        this._isUnderlyingChainSetup = false;
+	        _get(Object.getPrototypeOf(RecursiveTranslationChain.prototype), 'addUnit', this).call(this, unit);
+	      }
+	    }, {
+	      key: 'addUnits',
+	      value: function addUnits(units) {
+	        this._isUnderlyingChainSetup = false;
+	        _get(Object.getPrototypeOf(RecursiveTranslationChain.prototype), 'addUnits', this).call(this, units);
+	      }
+	    }, {
+	      key: 'addMagnitude',
+	      value: function addMagnitude(magnitude) {
+	        this._isUnderlyingChainSetup = false;
+	        _get(Object.getPrototypeOf(RecursiveTranslationChain.prototype), 'addMagnitude', this).call(this, magnitude);
+	      }
+	    }, {
+	      key: 'addMagnitudes',
+	      value: function addMagnitudes(magnitudes) {
+	        this._isUnderlyingChainSetup = false;
+	        _get(Object.getPrototypeOf(RecursiveTranslationChain.prototype), 'addMagnitudes', this).call(this, magnitudes);
+	      }
+	    }, {
+	      key: 'addOrderOfMagnitude',
+	      value: function addOrderOfMagnitude(orderOfMagnitude) {
+	        this._isUnderlyingChainSetup = false;
+	        _get(Object.getPrototypeOf(RecursiveTranslationChain.prototype), 'addOrderOfMagnitude', this).call(this, orderOfMagnitude);
+	      }
+	    }, {
+	      key: 'addOrderOfMagnitudes',
+	      value: function addOrderOfMagnitudes(orderOfMagnitudes) {
+	        this._isUnderlyingChainSetup = false;
+	        _get(Object.getPrototypeOf(RecursiveTranslationChain.prototype), 'addOrderOfMagnitudes', this).call(this, orderOfMagnitudes);
+	      }
+	    }, {
+	      key: 'continueWithOrderOfMagnitudeTranslation',
+	      value: function continueWithOrderOfMagnitudeTranslation(value) {
+	        this._underlyingChain.continueWithOrderOfMagnitudeTranslation(value);
+	      }
+	    }, {
+	      key: 'initializeUnderlyingChain',
+	      value: function initializeUnderlyingChain() {
+	        if (!this._isUnderlyingChainSetup) {
+	          this._underlyingChain.copyFrom(this);
+	          this._isUnderlyingChainSetup = true;
+	        }
+	      }
+	    }, {
+	      key: 'translate',
+	      value: function translate(value) {
+	        var startFromMagnitude = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+
+	        this.initializeUnderlyingChain();
+	        if (startFromMagnitude) {
+	          this._underlyingChain.reset(value);
+	          this._underlyingChain.continueWithMagnitudeTranslation(value);
+	        } else {
+	          this._underlyingChain.translate(value);
+	        }
+	        var initialResult = this._underlyingChain.result;
+	        var result = '';
+	        if (initialResult.getFactoredValue() >= 1 && initialResult.getFactoredValue() !== value) {
+	          var factoredValue = Math.floor(initialResult.getFactoredValue());
+	          initialResult.setFactoredValue(-1);
+	          result = this.translate(factoredValue, true) + ' ' + initialResult.toString();
+	        } else {
+	          result = initialResult.toString();
+	        }
+
+	        if (initialResult.getRemainder() >= 1) {
+	          return result + ' ' + this.translate(initialResult.getRemainder());
+	        } else {
+	          return result;
+	        }
+	      }
+	    }]);
+
+	    return RecursiveTranslationChain;
+	  })(_translationChain.TranslationChain);
+
+	  exports.RecursiveTranslationChain = RecursiveTranslationChain;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	//# sourceMappingURL=../../core/chain/recursive-translation-chain.js.map
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(3), __webpack_require__(1)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _locale, _typesMagnitude) {
 	  'use strict';
 
@@ -1329,10 +1478,10 @@
 	//# sourceMappingURL=../../../core/constants/number/order-of-magnitudes.js.map
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(3), __webpack_require__(1), __webpack_require__(14)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _locale, _typesMagnitude, _units) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(3), __webpack_require__(1), __webpack_require__(15)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _locale, _typesMagnitude, _units) {
 	  'use strict';
 
 	  Object.defineProperty(exports, '__esModule', {
@@ -1373,7 +1522,7 @@
 	//# sourceMappingURL=../../../core/constants/number/tens.js.map
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(3), __webpack_require__(1)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _locale, _typesMagnitude) {
@@ -1406,7 +1555,7 @@
 	//# sourceMappingURL=../../../core/constants/number/units.js.map
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(4)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _translationChain) {
@@ -1427,10 +1576,10 @@
 	  var CircularTranslationChain = (function (_TranslationChain) {
 	    _inherits(CircularTranslationChain, _TranslationChain);
 
-	    function CircularTranslationChain(fallbackTranslator) {
+	    function CircularTranslationChain() {
 	      _classCallCheck(this, CircularTranslationChain);
 
-	      _get(Object.getPrototypeOf(CircularTranslationChain.prototype), 'constructor', this).call(this, fallbackTranslator);
+	      _get(Object.getPrototypeOf(CircularTranslationChain.prototype), 'constructor', this).call(this);
 	    }
 
 	    _createClass(CircularTranslationChain, [{
@@ -1439,14 +1588,12 @@
 	        if (this.orderOfMagnitudeChain.isNotEmpty()) {
 	          var result = this.orderOfMagnitudeChain.translate(value);
 	          if (result.isUnderflow()) {
-	            this.finalResult.applyElementTranslationResult(result);
-	            this.justDoMagnitudeTranslation(this.finalResult.getFactoredValue());
+	            this.result.applyElementTranslationResult(result);
 	          } else if (result.isOverflow()) {
-	            this.finalResult.applyElementTranslationResultAsOrderOfMagnitude(result);
-	            this.continueWithOrderOfMagnitudeTranslation(this.finalResult.getFactoredValue());
+	            this.result.applyElementTranslationResultAsOrderOfMagnitude(result);
+	            this.continueWithOrderOfMagnitudeTranslation(this.result.getFactoredValue());
 	          } else {
-	            this.finalResult.applyElementTranslationResultAsOrderOfMagnitude(result);
-	            this.justDoMagnitudeTranslation(this.finalResult.getFactoredValue());
+	            this.result.applyElementTranslationResultAsOrderOfMagnitude(result);
 	          }
 	        }
 	      }
@@ -1460,7 +1607,7 @@
 	//# sourceMappingURL=../../core/chain/circular-translation-chain.js.map
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(2), __webpack_require__(3)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _utilValidator, _locale) {
@@ -1475,19 +1622,19 @@
 	  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 	  var TranslatorOptions = (function () {
-	    //number/time
-
-	    function TranslatorOptions(type) {
-	      var magnitudeOptions = arguments.length <= 1 || arguments[1] === undefined ? new MagnitudeOptions() : arguments[1];
+	    function TranslatorOptions(type, magnitudeOptions, translateRecursively) {
+	      if (magnitudeOptions === undefined) magnitudeOptions = new MagnitudeOptions();
 
 	      _classCallCheck(this, TranslatorOptions);
 
 	      this._magnitudeOptions = null;
 	      this._type = '';
+	      this._translateRecursively = false;
 
 	      if (_utilValidator.Validator.isDefinedAndNotNull(type)) {
 	        this._type = type;
 	        this._magnitudeOptions = magnitudeOptions;
+	        this._translateRecursively = translateRecursively;
 	      } else {
 	        throw _locale.Locale.Error.InvalidArgType;
 	      };
@@ -1508,6 +1655,14 @@
 	      },
 	      get: function get() {
 	        return this._type;
+	      }
+	    }, {
+	      key: 'TranslateRecursively',
+	      set: function set(value) {
+	        this._translateRecursively = value;
+	      },
+	      get: function get() {
+	        return this._translateRecursively;
 	      }
 	    }]);
 
@@ -1569,10 +1724,11 @@
 
 	  exports.MagnitudeOptions = MagnitudeOptions;
 	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	//number/time
 	//# sourceMappingURL=../../core/types/translator-options.js.map
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(2), __webpack_require__(3)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _utilValidator, _locale) {
@@ -1623,17 +1779,17 @@
 	//# sourceMappingURL=../../core/types/unit.js.map
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(19), __webpack_require__(16)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _translatorBase, _coreTypesTranslatorOptions) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(20), __webpack_require__(17)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _translatorBase, _coreTypesTranslatorOptions) {
 	  'use strict';
 
 	  Object.defineProperty(exports, '__esModule', {
 	    value: true
 	  });
 
-	  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	  var _get = function get(_x2, _x3, _x4) { var _again = true; _function: while (_again) { var object = _x2, property = _x3, receiver = _x4; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x2 = parent; _x3 = property; _x4 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 	  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
@@ -1643,9 +1799,11 @@
 	    _inherits(NumberTranslator, _TranslatorBase);
 
 	    function NumberTranslator(magnitudeOptions) {
+	      var translateRecursively = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+
 	      _classCallCheck(this, NumberTranslator);
 
-	      _get(Object.getPrototypeOf(NumberTranslator.prototype), 'constructor', this).call(this, magnitudeOptions);
+	      _get(Object.getPrototypeOf(NumberTranslator.prototype), 'constructor', this).call(this, magnitudeOptions, translateRecursively);
 	      this._setType(_coreTypesTranslatorOptions.TranslatorOptions.Type.Number);
 	      this.constructChain();
 	    }
@@ -1658,10 +1816,10 @@
 	//# sourceMappingURL=../translators/number-translator.js.map
 
 /***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(16), __webpack_require__(20)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _coreTypesTranslatorOptions, _coreChainTranslationChainBuilder) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(17), __webpack_require__(21)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _coreTypesTranslatorOptions, _coreChainTranslationChainBuilder) {
 	  'use strict';
 
 	  Object.defineProperty(exports, '__esModule', {
@@ -1675,12 +1833,14 @@
 	  var TranslatorBase = (function () {
 	    function TranslatorBase() {
 	      var magnitudeOptions = arguments.length <= 0 || arguments[0] === undefined ? new _coreTypesTranslatorOptions.MagnitudeOptions() : arguments[0];
+	      var translateRecursively = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
 
 	      _classCallCheck(this, TranslatorBase);
 
 	      this._type = null;
 
 	      this._magnitudeOptions = magnitudeOptions;
+	      this._translateRecursively = translateRecursively;
 	    }
 
 	    _createClass(TranslatorBase, [{
@@ -1691,7 +1851,7 @@
 	    }, {
 	      key: 'constructChain',
 	      value: function constructChain() {
-	        var translatorOptions = new _coreTypesTranslatorOptions.TranslatorOptions(this._type, this._magnitudeOptions);
+	        var translatorOptions = new _coreTypesTranslatorOptions.TranslatorOptions(this._type, this._magnitudeOptions, this._translateRecursively);
 	        var translationChainBuilder = new _coreChainTranslationChainBuilder.TranslationChainBuilder();
 	        this.translationChain = translationChainBuilder.build(translatorOptions);
 	      }
@@ -1710,10 +1870,10 @@
 	//# sourceMappingURL=../translators/translator-base.js.map
 
 /***/ },
-/* 20 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(14), __webpack_require__(13), __webpack_require__(12), __webpack_require__(21), __webpack_require__(15), __webpack_require__(16)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _constantsNumberUnits, _constantsNumberTens, _constantsNumberOrderOfMagnitudes, _constantsTimeUnits, _circularTranslationChain, _typesTranslatorOptions) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(15), __webpack_require__(14), __webpack_require__(13), __webpack_require__(22), __webpack_require__(16), __webpack_require__(12), __webpack_require__(17)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _constantsNumberUnits, _constantsNumberTens, _constantsNumberOrderOfMagnitudes, _constantsTimeUnits, _circularTranslationChain, _recursiveTranslationChain, _typesTranslatorOptions) {
 	  'use strict';
 
 	  Object.defineProperty(exports, '__esModule', {
@@ -1734,7 +1894,7 @@
 	    _createClass(TranslationChainBuilder, [{
 	      key: 'build',
 	      value: function build(options) {
-	        this._translationChain = new _circularTranslationChain.CircularTranslationChain();
+	        this._translationChain = options.TranslateRecursively ? new _recursiveTranslationChain.RecursiveTranslationChain(new _circularTranslationChain.CircularTranslationChain()) : new _circularTranslationChain.CircularTranslationChain();
 
 	        if (options.Type === _typesTranslatorOptions.TranslatorOptions.Type.Time) {
 	          this._addTimeChainElements();
@@ -1799,10 +1959,10 @@
 	//# sourceMappingURL=../../core/chain/translation-chain-builder.js.map
 
 /***/ },
-/* 21 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(3), __webpack_require__(17)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _locale, _typesUnit) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(3), __webpack_require__(18)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _locale, _typesUnit) {
 	  'use strict';
 
 	  Object.defineProperty(exports, '__esModule', {
@@ -1831,17 +1991,17 @@
 	//# sourceMappingURL=../../../core/constants/time/units.js.map
 
 /***/ },
-/* 22 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(19), __webpack_require__(16)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _translatorBase, _coreTypesTranslatorOptions) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(20), __webpack_require__(17)], __WEBPACK_AMD_DEFINE_RESULT__ = function (exports, _translatorBase, _coreTypesTranslatorOptions) {
 	  'use strict';
 
 	  Object.defineProperty(exports, '__esModule', {
 	    value: true
 	  });
 
-	  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	  var _get = function get(_x2, _x3, _x4) { var _again = true; _function: while (_again) { var object = _x2, property = _x3, receiver = _x4; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x2 = parent; _x3 = property; _x4 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 	  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
@@ -1851,9 +2011,11 @@
 	    _inherits(TimeTranslator, _TranslatorBase);
 
 	    function TimeTranslator(magnitudeOptions) {
+	      var translateRecursively = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+
 	      _classCallCheck(this, TimeTranslator);
 
-	      _get(Object.getPrototypeOf(TimeTranslator.prototype), 'constructor', this).call(this, magnitudeOptions);
+	      _get(Object.getPrototypeOf(TimeTranslator.prototype), 'constructor', this).call(this, magnitudeOptions, translateRecursively);
 	      this._setType(_coreTypesTranslatorOptions.TranslatorOptions.Type.Time);
 	      this.constructChain();
 	    }

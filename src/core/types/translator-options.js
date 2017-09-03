@@ -11,11 +11,13 @@ from '../../locale';
 export class TranslatorOptions {
   _magnitudeOptions = null;
   _type = ''; //number/time
+  _translateRecursively = false;
 
-  constructor(type, magnitudeOptions = new MagnitudeOptions()) {
+  constructor(type, magnitudeOptions = new MagnitudeOptions(), translateRecursively) {
     if (Validator.isDefinedAndNotNull(type)) {
       this._type = type;
       this._magnitudeOptions = magnitudeOptions
+      this._translateRecursively = translateRecursively;
     } else {
       throw Locale.Error.InvalidArgType;
     };
@@ -33,6 +35,13 @@ export class TranslatorOptions {
   }
   get Type() {
     return this._type;
+  }
+
+  set TranslateRecursively(value) {
+    this._translateRecursively = value;
+  }
+  get TranslateRecursively() {
+    return this._translateRecursively;
   }
 }
 

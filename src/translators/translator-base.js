@@ -11,9 +11,11 @@ from '../core/chain/translation-chain-builder';
 export class TranslatorBase {
   _magnitudeOptions;
   _type = null;
+  _translateRecursively;
 
-  constructor(magnitudeOptions = new MagnitudeOptions()) {
+  constructor(magnitudeOptions = new MagnitudeOptions(), translateRecursively = false) {
     this._magnitudeOptions = magnitudeOptions;
+    this._translateRecursively = translateRecursively;
   }
 
   _setType(type) {
@@ -21,7 +23,7 @@ export class TranslatorBase {
   }
 
   constructChain() {
-    let translatorOptions = new TranslatorOptions(this._type, this._magnitudeOptions);
+    let translatorOptions = new TranslatorOptions(this._type, this._magnitudeOptions, this._translateRecursively);
     let translationChainBuilder = new TranslationChainBuilder();
     this.translationChain = translationChainBuilder.build(translatorOptions);
   }

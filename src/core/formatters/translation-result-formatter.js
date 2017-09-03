@@ -35,7 +35,7 @@ export class TranslationResultFormatter {
 
   static getDigitValueString(translationResult) {
     let digitValue = translationResult.getFactoredValue();
-    return (Validator.isDefinedAndNotNull(digitValue) ? NumberFormatter.format(digitValue) : '');
+    return (Validator.isPositiveNumber(digitValue) ? NumberFormatter.format(digitValue) : '');
   }
 
   static getUnitString(translationResult) {

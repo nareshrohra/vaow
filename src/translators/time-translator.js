@@ -9,8 +9,8 @@ import {
 from '../core/types/translator-options';
 
 export class TimeTranslator extends TranslatorBase {
-  constructor(magnitudeOptions) {
-    super(magnitudeOptions);
+  constructor(magnitudeOptions, translateRecursively = false) {
+    super(magnitudeOptions, translateRecursively);
     this._setType(TranslatorOptions.Type.Time);
     this.constructChain();
   }

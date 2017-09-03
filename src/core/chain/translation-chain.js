@@ -33,7 +33,7 @@ export class TranslationChain {
     this.unitChain = new Chain();
     this.magnitudeChain = new Chain();
     this.orderOfMagnitudeChain = new Chain();
-    this.finalResult = null;
+    this.result = null;
   }
 
   addUnit(unit) {
@@ -93,11 +93,20 @@ export class TranslationChain {
     }
   }
 
+  copyFrom(translationChain) {
+      this.unitChain.empty();
+      this.unitChain.copyFrom(translationChain.unitChain);
+      this.magnitudeChain.empty();
+      this.magnitudeChain.copyFrom(translationChain.magnitudeChain);
+      this.orderOfMagnitudeChain.empty();
+      this.orderOfMagnitudeChain.copyFrom(translationChain.orderOfMagnitudeChain);
+  }
+
   translate(value) {
     if (Validator.isPositiveNumber(value)) {
       if (this.unitChain.isNotEmpty() || this.magnitudeChain.isNotEmpty() || this.orderOfMagnitudeChain.isNotEmpty()) {
         this.performTranslation(value);
-        return this.finalResult.toString();
+        return this.result.toString();
       } else {
         throw Locale.Error.UnitsMagnitudesNotAdded;
       }
@@ -106,9 +115,13 @@ export class TranslationChain {
     }
   }
 
+  reset(value) {
+    this.result = new TranslationResult();
+    this.result.setFactoredValue(value);
+  }
+
   performTranslation(value) {
-    this.finalResult = new TranslationResult();
-    this.finalResult.setFactoredValue(value);
+    this.reset(value);
     this.continueWithUnitTranslation(value);
   }
 
@@ -116,17 +129,16 @@ export class TranslationChain {
     if (this.unitChain.isNotEmpty()) {
       let result = this.unitChain.translate(value);
       if (!result.isUnderflow()) {
-        this.finalResult.applyElementTranslationResultAsUnit(result);
-        this.continueWithMagnitudeTranslation(this.finalResult.getFactoredValue());
+        this.result.applyElementTranslationResultAsUnit(result);
       } else {
-        this.finalResult.applyElementTranslationResult(result);
-        this.continueWithMagnitudeTranslation(this.finalResult.getFactoredValue());
+        this.result.applyElementTranslationResult(result);
+        this.continueWithMagnitudeTranslation(this.result.getFactoredValue());
       }
       if (result.isOverflow()) {
-        this.continueWithMagnitudeTranslation(this.finalResult.getFactoredValue());
+        this.continueWithMagnitudeTranslation(this.result.getFactoredValue());
       }
     } else {
-      this.continueWithMagnitudeTranslation(this.finalResult.getFactoredValue());
+      this.continueWithMagnitudeTranslation(this.result.getFactoredValue());
     }
   }
 
@@ -134,18 +146,18 @@ export class TranslationChain {
     if (this.magnitudeChain.isNotEmpty()) {
       let result = this.magnitudeChain.translate(value);
       if (result.isUnderflow()) {
-        this.finalResult.applyElementTranslationResult(result);
+        this.result.applyElementTranslationResult(result);
       } else if (result.isIncomplete()) {
-        this.finalResult.applyElementTranslationResultAsMagnitude(result);
-        this.justDoMagnitudeTranslation(this.finalResult.getRemainder());
+        this.result.applyElementTranslationResultAsMagnitude(result);
+        this.justDoMagnitudeTranslation(this.result.getRemainder());
       } else {
-        this.finalResult.applyElementTranslationResultAsMagnitude(result);
+        this.result.applyElementTranslationResultAsMagnitude(result);
       }
       if (result.isOverflow()) {
-        this.continueWithOrderOfMagnitudeTranslation(this.finalResult.getFactoredValue());
+        this.continueWithOrderOfMagnitudeTranslation(this.result.getFactoredValue());
       }
     } else {
-      this.continueWithOrderOfMagnitudeTranslation(this.finalResult.getFactoredValue());
+      this.continueWithOrderOfMagnitudeTranslation(this.result.getFactoredValue());
     }
   }
 
@@ -153,12 +165,13 @@ export class TranslationChain {
     if (this.magnitudeChain.isNotEmpty()) {
       let result = this.magnitudeChain.translate(value);
       if (result.isUnderflow()) {
-        this.finalResult.applyElementTranslationResult(result);
+        this.result.applyElementTranslationResult(result);
       } else if (result.isIncomplete()) {
-        this.finalResult.applyElementTranslationResultAsMagnitude(result);
-        this.justDoMagnitudeTranslation(this.finalResult.getRemainder());
+        this.result.applyElementTranslationResultAsMagnitude(result);
+        this.justDoMagnitudeTranslation(this.result.getRemainder());
       } else {
-        this.finalResult.applyElementTranslationResultAsMagnitude(result);
+        this.result.setRemainder(0);
+        this.result.applyElementTranslationResultAsMagnitude(result);
       }
     }
   }
@@ -167,9 +180,9 @@ export class TranslationChain {
     if (this.orderOfMagnitudeChain.isNotEmpty()) {
       let result = this.orderOfMagnitudeChain.translate(value);
       if (result.isUnderflow()) {
-        this.finalResult.applyElementTranslationResult(result);
+        this.result.applyElementTranslationResult(result);
       } else {
-        this.finalResult.applyElementTranslationResultAsOrderOfMagnitude(result);
+        this.result.applyElementTranslationResultAsOrderOfMagnitude(result);
       }
     }
   }

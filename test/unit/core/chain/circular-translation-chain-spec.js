@@ -116,7 +116,7 @@ describe('the CircularTranslationChain class with magnitude translation', () => 
   it('translates 1000', () => {
     let grand = new OrderOfMagnitude('grand', 1000);
     translationChain.addOrderOfMagnitude(grand);
-    expect(translationChain.translate(1000)).toBe("one grand");
+    expect(translationChain.translate(1000)).toBe("1 grand");
   });
 
   it('translates value in units', () => {
@@ -125,26 +125,27 @@ describe('the CircularTranslationChain class with magnitude translation', () => 
 
   it('translates value in units-tens', () => {
     expect(translationChain.translate(55)).toBe("fifty five");
+    expect(translationChain.result.getRemainder()).toBe(0);
   });
 
   it('translates with value in multiple OrderOfMagnitudes and magnitude in units', () => {
     translationChain.addOrderOfMagnitudes([OrderOfMagnitudes.Million, OrderOfMagnitudes.Billion, OrderOfMagnitudes.Trillion]);
 
     let value = OrderOfMagnitudes.Million.getValue() * OrderOfMagnitudes.Trillion.getValue();
-    expect(translationChain.translate(value)).toBe("one million trillion");
+    expect(translationChain.translate(value)).toBe("1 million trillion");
   });
 
   it('translates with value in multiple OrderOfMagnitudes and magnitude in tens', () => {
     translationChain.addOrderOfMagnitudes([OrderOfMagnitudes.Million, OrderOfMagnitudes.Billion, OrderOfMagnitudes.Trillion]);
 
     let value = 11 * OrderOfMagnitudes.Million.getValue() * OrderOfMagnitudes.Trillion.getValue();
-    expect(translationChain.translate(value)).toBe("eleven million trillion");
+    expect(translationChain.translate(value)).toBe("11 million trillion");
   });
 
   it('translates with value in multiple OrderOfMagnitudes and magnitude in unit-tens', () => {
     translationChain.addOrderOfMagnitudes([OrderOfMagnitudes.Million, OrderOfMagnitudes.Billion, OrderOfMagnitudes.Trillion]);
 
     let value = 32 * OrderOfMagnitudes.Million.getValue() * OrderOfMagnitudes.Trillion.getValue();
-    expect(translationChain.translate(value)).toBe("thirty two million trillion");
+    expect(translationChain.translate(value)).toBe("32 million trillion");
   });
 });

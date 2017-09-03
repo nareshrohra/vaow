@@ -119,11 +119,11 @@ describe('the TimeTranslator class', () => {
     });
 
     it('translates 5', () => {
-      expect(translator.translate(5)).toBe('five seconds');
+      expect(translator.translate(5)).toBe('5 seconds');
     });
 
     it('translates 10', () => {
-      expect(translator.translate(10)).toBe('ten seconds');
+      expect(translator.translate(10)).toBe('10 seconds');
     });
 
     it('translates 67 centuries', () => {
@@ -157,6 +157,30 @@ describe('the TimeTranslator class', () => {
     it('translates 1000 centuries', () => {
       let value = Time.Century.getValue() * 1000;
       expect(translator.translate(value)).toBe('1 thousand centuries');
+    });
+  });
+
+  describe('with recursive translation option', () => {
+    beforeEach(() => {
+      let magnitudeOptions = new MagnitudeOptions();
+      magnitudeOptions.TranslateMagnitudes = true;
+      magnitudeOptions.TranslateVeryLowOrderOfMagnitudes = true;
+      translator = new TimeTranslator(magnitudeOptions, true);
+    });
+
+    it('translates 100 centuries', () => {
+      let value = Time.Century.getValue() * 100;
+      expect(translator.translate(value)).toBe('one hundred centuries');
+    });
+
+    it('translates 1000 centuries', () => {
+      let value = Time.Century.getValue() * 1000;
+      expect(translator.translate(value)).toBe('one thousand centuries');
+    });
+
+    it('translates 1 decade + 3 minutes', () => {
+      let value = Time.Decade.getValue() + (Time.Minute.getValue() * 3);
+      expect(translator.translate(value)).toBe('one decades three minutes');
     });
   });
 });

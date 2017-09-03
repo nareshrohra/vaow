@@ -9,8 +9,8 @@ import {
 from '../core/types/translator-options';
 
 export class NumberTranslator extends TranslatorBase {
-  constructor(magnitudeOptions) {
-    super(magnitudeOptions);
+  constructor(magnitudeOptions, translateRecursively = false) {
+    super(magnitudeOptions, translateRecursively);
     this._setType(TranslatorOptions.Type.Number);
     this.constructChain();
   }

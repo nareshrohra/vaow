@@ -46,6 +46,18 @@ export class Chain {
     this.tail = chainElement;
   }
 
+  empty(destroy = false) {
+    this.head = null;
+  }
+
+  copyFrom(chain) {
+      let element = chain.head;
+      while(element !== null) {
+          this.addChainElement(element);
+          element = element.nextElement;
+      }
+  }
+
   translate(value) {
     if (Validator.isPositiveNumber(value)) {
       if (this.isNotEmpty()) {

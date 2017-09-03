@@ -24,6 +24,11 @@ import {
 from './circular-translation-chain';
 
 import {
+  RecursiveTranslationChain
+}
+from './recursive-translation-chain';
+
+import {
   TranslatorOptions
 } from '../types/translator-options';
 
@@ -31,8 +36,8 @@ export class TranslationChainBuilder {
   translationChain = null;
 
   build(options) {
-    this._translationChain = new CircularTranslationChain();
-
+    this._translationChain = options.TranslateRecursively ? new RecursiveTranslationChain(new CircularTranslationChain()) : new CircularTranslationChain();
+    
     if(options.Type === TranslatorOptions.Type.Time) {
       this._addTimeChainElements();
     }
