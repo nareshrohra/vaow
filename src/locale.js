@@ -90,5 +90,23 @@ Locale.Time = {
   Months : 'months',
   Years : 'years',
   Decades : 'decades',
-  Centuries : 'centuries'
+  Centuries : 'centuries',
+  Millenium : 'millenium'
+};
+
+Locale.Weight = {
+  Milligrams : 'milligrams',
+  Grams : 'grams',
+  Kilograms : 'kilograms',
+  Quintals: 'quintals',
+  Tons: 'tons'
+};
+
+Locale.Distance = {
+  Millimeters : 'millimeters',
+  Centimeters : 'centimeters',
+  Inches: 'nches' ,
+  Feets: 'feets',
+  Meters : 'meters',
+  Kilometers : 'kilometers'
 };

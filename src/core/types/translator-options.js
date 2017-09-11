@@ -45,9 +45,12 @@ export class TranslatorOptions {
   }
 }
 
-TranslatorOptions.Type = {};
-TranslatorOptions.Type.Number = 'number';
-TranslatorOptions.Type.Time = 'time';
+TranslatorOptions.Type = {
+  Number: 'number',
+  Time: 'time',
+  Weight: 'weight',
+  Distance: 'distance'
+};
 
 export class MagnitudeOptions {
   _translateMagnitudes = false;

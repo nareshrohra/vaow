@@ -62,16 +62,19 @@ export class RecursiveTranslationChain extends TranslationChain {
       }
       let initialResult = this._underlyingChain.result;
       let result = '';
-      if(initialResult.getFactoredValue() >= 1 && initialResult.getFactoredValue() !== value) {
+      
+      if(initialResult.getFactoredValue() >= 1 && (initialResult.getFactoredValue() !== value || startFromMagnitude == false)) {
           let factoredValue = Math.floor(initialResult.getFactoredValue());
           initialResult.setFactoredValue(-1);
-          result = this.translate(factoredValue, true) + ' ' + initialResult.toString();
+          let factoredValueTranslation = this.translate(factoredValue, true);
+          result = (factoredValueTranslation ? factoredValueTranslation.trim() + ' ' : '') + initialResult.toString();
       } else {
           result = initialResult.toString();
       }
 
       if(initialResult.getRemainder() >= 1) {
-          return result + ' ' + this.translate(initialResult.getRemainder());
+          let remainderValueTranslation = this.translate(initialResult.getRemainder());
+          return result + (remainderValueTranslation ? ' ' + remainderValueTranslation.trim() : '');
       } else {
         return result;
       }

@@ -14,7 +14,9 @@ define([
     './core/constants/number/order-of-magnitudes.js',
     './core/constants/number/tens.js',
     './core/constants/number/units.js',
-    './core/constants/time/units.js',
+    './core/constants/units/time.js',
+    './core/constants/units/distance.js',
+    './core/constants/units/weight.js',
 
     './core/types/magnitude.js',
     './core/types/translation-result.js',
@@ -23,6 +25,8 @@ define([
 
     './translators/number-translator.js',
     './translators/time-translator.js',
+    './translators/distance-translator.js',
+    './translators/weight-translator.js',
     './translators/translator-base.js',
 
     './util/validator.js',
@@ -35,11 +39,12 @@ define([
     //formatters
     numberFormatter, translationResultFormatter,
     //constants
-    orderOfMagnitudes, tens, numberUnits, timeUnits,
+    orderOfMagnitudes, tens, numberUnits, 
+    timeUnits, distanceUnits, weightUnits,
     //types
     magnitude, translationResult, translatorOptions, unit,
     //translators
-    numberTranslator, timeTranslator, translatorBase,
+    numberTranslator, timeTranslator, distanceTranslator, weightTranslator, translatorBase,
     //util
     validator,
     //locale
@@ -62,8 +67,10 @@ define([
           Tens: tens.Tens,
           Units: numberUnits.Units
         },
-        time: {
-          Units: timeUnits.Units
+        units: {
+          Time: timeUnits.Time,
+          Distance: distanceUnits.Distance,
+          Weight: weightUnits.Weight
         }
       },
 
@@ -81,6 +88,8 @@ define([
 
       NumberTranslator: numberTranslator.NumberTranslator,
       TimeTranslator: timeTranslator.TimeTranslator,
+      DistanceTranslator: distanceTranslator.DistanceTranslator,
+      WeightTranslator: weightTranslator.WeightTranslator,
       TranslatorBase: translatorBase.TranslatorBase,
 
       util: {

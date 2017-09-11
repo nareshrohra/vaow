@@ -21,13 +21,13 @@ export class TranslationResultFormatter {
         magnitudes = this.getMagnitudesString(translationResult),
         orderOfMagnitudes = this.getOrderOfMagnitudesString(translationResult),
         unit = this.getUnitString(translationResult);
-
-      return [
+      let parts = [
           (magnitudes === '' ? digitValue : ''),
           magnitudes,
           orderOfMagnitudes,
           unit
-        ].filter(function (val) {return val;}).join(' ');
+        ];
+        return parts.filter(function (val) {return val;}).join(' ');
     } else {
       throw Locale.Error.InvalidArgTranslationResult;
     }

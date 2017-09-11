@@ -1,0 +1,1 @@
+powershell -file publish.ps1 -localFiles "dist/vaow.js" -remotePath "libraries/vaow"

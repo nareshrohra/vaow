@@ -123,10 +123,8 @@ export class TranslationResult extends TranslationResultBase {
 
   applyElementTranslationResultAsOrderOfMagnitude(elementResult) {
     if (Validator.isDefinedAndNotNull(elementResult)) {
-      //elementResult.getRemainder() === 3 && console.log('applyElementTranslationResultAsOrderOfMagnitude', 'before', elementResult);
       this.applyElementTranslationResult(elementResult);
       this.increaseByOrderOfMagnitude(elementResult.getWord());
-      //elementResult.getRemainder() === 3 && console.log('applyElementTranslationResultAsOrderOfMagnitude', 'after', elementResult);
     } else {
       throw Locale.Error.InvalidArgElementResult;
     }

@@ -21,7 +21,7 @@ from '../../../src/core/types/translator-options';
 import {
   Time
 }
-from '../../../src/core/constants/time/units';
+from '../../../src/core/constants/units/time';
 
 let translator = null;
 
@@ -83,7 +83,7 @@ describe('the TimeTranslator class', () => {
 
     it('translates a decade', () => {
       let value = Time.Decade.getValue();
-      expect(translator.translate(value)).toBe('1 decades');
+      expect(translator.translate(value)).toBe('10 years');
     });
 
     it('translates a century', () => {
@@ -178,9 +178,9 @@ describe('the TimeTranslator class', () => {
       expect(translator.translate(value)).toBe('one thousand centuries');
     });
 
-    it('translates 1 decade + 3 minutes', () => {
-      let value = Time.Decade.getValue() + (Time.Minute.getValue() * 3);
-      expect(translator.translate(value)).toBe('one decades three minutes');
+    it('translates 1 year + 3 minutes', () => {
+      let value = Time.Year.getValue() + (Time.Minute.getValue() * 3);
+      expect(translator.translate(value)).toBe('one years three minutes');
     });
   });
 });

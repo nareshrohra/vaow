@@ -6,7 +6,7 @@ from '../../../../src/core/chain/translation-chain-builder';
 import {
   Time
 }
-from '../../../../src/core/constants/time/units';
+from '../../../../src/core/constants/units/time';
 
 import {
   OrderOfMagnitudes

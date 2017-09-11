@@ -127,15 +127,20 @@ export class TranslationChain {
 
   continueWithUnitTranslation(value) {
     if (this.unitChain.isNotEmpty()) {
-      let result = this.unitChain.translate(value);
+      let result = this.unitChain.translate(value),
+        remainderFromUnitTranslation = 0;
       if (!result.isUnderflow()) {
         this.result.applyElementTranslationResultAsUnit(result);
+        remainderFromUnitTranslation = result.getRemainder();
       } else {
         this.result.applyElementTranslationResult(result);
         this.continueWithMagnitudeTranslation(this.result.getFactoredValue());
       }
       if (result.isOverflow()) {
         this.continueWithMagnitudeTranslation(this.result.getFactoredValue());
+        if(remainderFromUnitTranslation > 0) {
+          this.result.setRemainder(remainderFromUnitTranslation);
+        }
       }
     } else {
       this.continueWithMagnitudeTranslation(this.result.getFactoredValue());

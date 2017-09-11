@@ -1,4 +1,9 @@
 import {
+  Validator
+}
+from '../../util/validator';
+
+import {
   Units
 }
 from '../constants/number/units';
@@ -16,7 +21,17 @@ from '../constants/number/order-of-magnitudes';
 import {
   Time
 }
-from '../constants/time/units';
+from '../constants/units/time';
+
+import {
+  Distance
+}
+from '../constants/units/distance';
+
+import {
+  Weight
+}
+from '../constants/units/weight';
 
 import {
   CircularTranslationChain
@@ -32,23 +47,25 @@ import {
   TranslatorOptions
 } from '../types/translator-options';
 
+let TypedUnits = {
+  time: Time,
+  weight: Weight,
+  distance: Distance
+};
+
 export class TranslationChainBuilder {
   translationChain = null;
 
   build(options) {
     this._translationChain = options.TranslateRecursively ? new RecursiveTranslationChain(new CircularTranslationChain()) : new CircularTranslationChain();
     
-    if(options.Type === TranslatorOptions.Type.Time) {
-      this._addTimeChainElements();
+    if(Validator.isDefinedAndNotNull(TypedUnits[options.Type])) {
+      this._translationChain.addUnits(TypedUnits[options.Type].Default);
     }
 
     this._addMagnitudesAndOrder(options.MagnitudeOptions);
 
     return this._translationChain;
-  }
-
-  _addTimeChainElements() {
-    this._translationChain.addUnits(Time.All);
   }
 
   _addMagnitudesAndOrder(magnitudeOptions) {
